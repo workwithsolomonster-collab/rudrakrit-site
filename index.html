@@ -474,14 +474,16 @@ body,.how,.foot,.explore,.cta{background:#000}
 #explore .aud-btn:hover{color:var(--paper)}
 #explore .aud-btn[aria-selected="true"]{color:var(--paper);padding-left:0}
 #explore .aud-btn[aria-selected="true"]::after{transform:scaleX(1)}
-.aud-view{display:grid;grid-template-columns:minmax(0,1fr) minmax(200px,280px);gap:24px 64px;align-items:end}
-.aud-info{grid-column:1;grid-row:1;display:flex;flex-direction:column;gap:18px}
-.aud-k{display:none}
+#explore .aud.auto .aud-btn[aria-selected="true"]::after{animation:audProg 7s linear both}
+@keyframes audProg{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.aud-view{display:grid;grid-template-columns:minmax(220px,300px) minmax(0,1fr);gap:24px clamp(32px,5vw,80px);align-items:center}
+.aud-info{grid-column:2;grid-row:1;display:flex;flex-direction:column;gap:18px;max-width:640px}
+.aud-k{display:block;font-family:var(--f-mono);font-size:12px;color:var(--yellow);margin-bottom:12px}
 .aud-top{display:block}
-.aud-name{margin:0;font-family:var(--f-display);font-size:clamp(24px,2.4vw,36px);font-weight:800;letter-spacing:-.04em;line-height:1.05}
+.aud-name{margin:0;font-family:var(--f-display);font-size:clamp(28px,3.2vw,48px);font-weight:800;letter-spacing:-.045em;line-height:1}
 .aud-info .aud-desc{margin:0;max-width:46ch;color:var(--mute-d);font-size:clamp(15px,1.15vw,17px)}
 .aud-who{margin-top:14px}
-.aud-view .stage{grid-column:2;grid-row:1;aspect-ratio:4/5;width:100%;border-radius:8px}
+.aud-view .stage{grid-column:1;grid-row:1;aspect-ratio:9/16;width:100%;border-radius:10px}
 .aud-view .sv{object-fit:cover}
 .aud-who small{display:block;font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute-d);margin-bottom:10px}
 .aud-who ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px 28px}
@@ -491,7 +493,7 @@ body,.how,.foot,.explore,.cta{background:#000}
 .aud-who span em{font-style:normal;color:var(--paper)}
 .aud-name{animation:whoIn .5s var(--ease) both}
 @keyframes whoIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-@media (max-width:760px){#explore .aud-list{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px}#explore .aud-btn{flex:none}.aud-view{grid-template-columns:1fr}.aud-view .stage{grid-column:1;grid-row:1;max-width:260px}.aud-info{grid-row:2}}
+@media (max-width:760px){#explore .aud-list{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px}#explore .aud-btn{flex:none}.aud-view{grid-template-columns:1fr}.aud-view .stage{grid-column:1;grid-row:1;max-width:260px;aspect-ratio:4/5}.aud-info{grid-column:1;grid-row:2}}
 @media (prefers-reduced-motion:reduce){.aud-who li,.aud-name{animation:none;opacity:1;transform:none}}
 .caps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px;margin-top:var(--g1)}
 .cap h3,.pt-item h3,.step h3{margin:0 0 12px;font-size:clamp(19px,1.6vw,23px);font-weight:700;letter-spacing:-.025em;line-height:1.15}
@@ -1124,6 +1126,19 @@ $$('.aud-btn').forEach(b => {
     if (['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft'].includes(e.key)) { const k = AUDS.indexOf(mode) + (e.key === 'ArrowDown' || e.key === 'ArrowRight' ? 1 : -1), n = AUDS[(k + AUDS.length) % AUDS.length]; setMode(n); $(`.aud-btn[data-mode="${n}"]`).focus(); e.preventDefault(); }
   });
 });
+
+/* who we work with: moves to the next audience every 7s while the section is on screen; hovering holds it */
+const audEl = $('#explore .aud'); let audT = 0, audSeen = false, audHold = false;
+function audArm() {
+  clearTimeout(audT); audEl.classList.remove('auto');
+  if (RM || !audSeen || audHold) return;
+  void audEl.offsetWidth; audEl.classList.add('auto');
+  audT = setTimeout(() => { setMode(AUDS[(AUDS.indexOf(mode) + 1) % AUDS.length]); audArm(); }, 7000);
+}
+audEl.addEventListener('pointerenter', () => { audHold = true; audArm(); });
+audEl.addEventListener('pointerleave', () => { audHold = false; audArm(); });
+$$('.aud-btn').forEach(b => b.addEventListener('click', audArm));
+new IntersectionObserver(es => { audSeen = es[0].isIntersecting; audArm(); }, { threshold: .4 }).observe(audEl);
 
 const counters = $$('[data-count]');
 const cio = new IntersectionObserver(es => es.forEach(e => {
