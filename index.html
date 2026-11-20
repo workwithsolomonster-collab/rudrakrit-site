@@ -523,21 +523,6 @@ body,.how,.foot,.explore,.cta{background:#000}
 .btn-g:hover{background:#fff;border-color:#fff;color:var(--ink)}
 .proof-stats span{color:#8C8BE6}
 
-/* Capabilities: dark cards with service chips */
-#capabilities .caps{display:block;margin-top:var(--g1);border-top:1px solid var(--line-d)}
-#capabilities .cap{display:grid;grid-template-columns:56px minmax(0,1fr) minmax(0,1.1fr);align-items:baseline;gap:6px 24px;padding:clamp(12px,1.2vw,16px) 0;border-bottom:1px solid var(--line-d);counter-increment:cap}
-#capabilities .caps{counter-reset:cap}
-#capabilities .cap::before{content:counter(cap,decimal-leading-zero);font-family:var(--f-mono);font-size:12px;color:var(--mute-d);transition:color .35s}
-#capabilities .cap h3{margin:0;font-family:var(--f-display);font-size:clamp(22px,2.3vw,34px);font-weight:800;letter-spacing:-.04em;line-height:1.05;color:rgba(244,242,236,.88);transition:color .35s var(--ease),transform .5s var(--ease)}
-#capabilities .cap h3::before{display:none}
-#capabilities .cap ul{display:flex;flex-wrap:wrap;gap:4px 0;font-size:clamp(14px,1.05vw,16px);color:var(--mute-d);transition:color .35s}
-#capabilities .cap li:not(:last-child)::after{content:"·";margin:0 10px;color:rgba(244,242,236,.25)}
-#capabilities .caps:hover .cap h3{color:rgba(244,242,236,.3)}
-#capabilities .caps .cap:hover h3{color:var(--yellow);transform:translateX(10px)}
-#capabilities .cap:hover::before,#capabilities .cap:hover ul{color:var(--paper)}
-#capabilities .close{font-size:clamp(15px,1.2vw,17px);color:var(--mute-d);margin-top:18px}
-#capabilities{padding-block:calc(var(--sec) * .7)}
-@media (max-width:760px){#capabilities .cap{grid-template-columns:36px minmax(0,1fr)}#capabilities .cap ul{grid-column:2}}
 
 /* About: compact two-column layout, heading and line left, stats right */
 #about{padding-block:calc(var(--sec) * .6)}
