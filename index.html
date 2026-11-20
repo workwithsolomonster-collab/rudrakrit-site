@@ -464,34 +464,9 @@ body,.how,.foot,.explore,.cta{background:#000}
 .aud-btn{text-align:left;font-weight:700;font-size:clamp(18px,1.6vw,24px);letter-spacing:-.03em;line-height:1.1;padding:9px 0;color:rgba(244,242,236,.2);transition:color .4s var(--ease),transform .4s var(--ease)}
 .aud-btn:hover{color:rgba(244,242,236,.5)}
 .aud-btn[aria-selected="true"]{color:var(--paper);transform:translateX(10px)}
+.aud-view .stage{aspect-ratio:16/10;width:100%}
 .aud-desc{margin:16px 0 0;font-size:clamp(16px,1.4vw,19px);line-height:1.45;max-width:46ch;color:var(--paper)}
 @media (max-width:860px){.aud{grid-template-columns:1fr}.aud-btn[aria-selected="true"]{transform:none}}
-/* Whatever you're building: the heading runs into a stacked list of what you might be building; the clip carries the details */
-#explore .aud{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,340px);gap:32px clamp(40px,6vw,96px);align-items:center;margin-top:var(--g1)}
-#explore .aud-list{flex-direction:column;align-items:flex-start;gap:0}
-#explore .aud-btn{position:relative;font-family:var(--f-display);font-size:clamp(34px,5.2vw,80px);font-weight:800;letter-spacing:-.05em;line-height:1.08;padding:2px 0 6px;color:rgba(244,242,236,.14);box-shadow:none;transform:none;transition:color .4s var(--ease)}
-#explore .aud-btn .pt{color:inherit;transition:color .4s}
-#explore .aud-btn:hover{color:rgba(244,242,236,.4)}
-#explore .aud-btn[aria-selected="true"]{color:var(--paper);padding-left:0}
-#explore .aud-btn[aria-selected="true"] .pt{color:var(--yellow)}
-#explore .aud-btn::after{content:"";position:absolute;left:0;bottom:2px;height:2px;width:100%;background:var(--yellow);transform:scaleX(0);transform-origin:left}
-#explore .aud.auto .aud-btn[aria-selected="true"]::after{animation:audProg 7s linear both}
-@keyframes audProg{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-.aud-view{grid-column:2;grid-row:1;position:relative;border-radius:12px;overflow:hidden}
-.aud-view .stage{aspect-ratio:9/16;width:100%;border-radius:0}
-.aud-view .sv{object-fit:cover}
-.aud-info{position:absolute;left:0;right:0;bottom:0;z-index:6;display:flex;flex-direction:column;gap:12px;padding:56px 20px 20px;background:linear-gradient(transparent,rgba(0,0,0,.6) 30%,rgba(0,0,0,.9));pointer-events:none}
-.aud-top{display:none}
-.aud-info .aud-desc{margin:0;font-size:14px;line-height:1.45;color:rgba(244,242,236,.88);max-width:none}
-.aud-who small{display:block;font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--yellow);margin-bottom:6px}
-.aud-who ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 14px}
-.aud-who li{display:flex;align-items:baseline;gap:6px;opacity:0;transform:translateY(6px);animation:whoIn .5s var(--ease) forwards}
-.aud-who b{font-size:13px;font-weight:600}
-.aud-who span{font-size:11px;color:rgba(244,242,236,.6)}
-.aud-who span em{font-style:normal;color:var(--paper)}
-@keyframes whoIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-@media (max-width:760px){#explore .aud{grid-template-columns:1fr}.aud-view{grid-column:1;grid-row:2;width:100%;max-width:340px}#explore .aud-btn{font-size:clamp(30px,9vw,44px)}}
-@media (prefers-reduced-motion:reduce){.aud-who li{animation:none;opacity:1;transform:none}}
 .caps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px;margin-top:var(--g1)}
 .cap h3,.pt-item h3,.step h3{margin:0 0 12px;font-size:clamp(19px,1.6vw,23px);font-weight:700;letter-spacing:-.025em;line-height:1.15}
 .cap ul{list-style:none;margin:0;padding:0;display:grid;gap:7px;color:var(--mute-d);font-size:16px}
@@ -618,19 +593,15 @@ body,.how,.foot,.explore,.cta{background:#000}
     <h2 class="h2" id="h-explore">Whatever you're building, we can create alongside you.</h2>
     <div class="aud">
       <div class="aud-list" role="tablist" aria-label="Who we work with">
-        <button class="aud-btn" role="tab" data-mode="brands" aria-selected="true" data-desc="For brands that need creative work to keep their communication moving, from product videos and campaigns to everyday content.">a brand<span class="pt">.</span></button>
-        <button class="aud-btn" role="tab" data-mode="startups" aria-selected="false" data-desc="For teams building something new and looking for creative support that can grow with them.">a product<span class="pt">.</span></button>
-        <button class="aud-btn" role="tab" data-mode="creators" aria-selected="false" data-desc="For creators who need a consistent production partner to develop, produce and deliver content.">a channel<span class="pt">.</span></button>
-        <button class="aud-btn" role="tab" data-mode="agencies" aria-selected="false" data-desc="For teams that need additional creative and production capabilities without expanding their in-house setup.">a campaign<span class="pt">.</span></button>
-        <button class="aud-btn" role="tab" data-mode="entertainment" aria-selected="false" data-desc="For projects that call for specialised visual execution, 3D, VFX, motion and production.">a game or film<span class="pt">.</span></button>
+        <button class="aud-btn" role="tab" data-mode="brands" aria-selected="true" data-desc="For brands that need creative work to keep their communication moving, from product videos and campaigns to everyday content.">Brands &amp; Businesses</button>
+        <button class="aud-btn" role="tab" data-mode="startups" aria-selected="false" data-desc="For teams building something new and looking for creative support that can grow with them.">Startups &amp; Growing Teams</button>
+        <button class="aud-btn" role="tab" data-mode="creators" aria-selected="false" data-desc="For creators who need a consistent production partner to develop, produce and deliver content.">Creators &amp; Media</button>
+        <button class="aud-btn" role="tab" data-mode="agencies" aria-selected="false" data-desc="For teams that need additional creative and production capabilities without expanding their in-house setup.">Agencies &amp; Marketing Teams</button>
+        <button class="aud-btn" role="tab" data-mode="entertainment" aria-selected="false" data-desc="For projects that call for specialised visual execution, 3D, VFX, motion and production.">Entertainment &amp; Gaming</button>
       </div>
       <div class="aud-view">
-        <div class="stage" id="stage" role="tabpanel" aria-label="Preview"><video class="sv" data-mode="brands" src="media/prime.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="startups" src="media/keyring-saas.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="creators" src="media/cristian.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="agencies" src="media/level4.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="entertainment" src="media/mw-shelby.mp4" muted loop playsinline preload="auto"></video></div>
-        <div class="aud-info">
-          <div class="aud-top"><span class="aud-k" id="aud-k">01 / 05</span><h3 class="aud-name" id="aud-name"></h3></div>
-          <p class="aud-desc" id="aud-desc" aria-live="polite"></p>
-          <div class="aud-who" id="aud-who"></div>
-        </div>
+        <div class="stage" id="stage" role="tabpanel" aria-label="Preview"><video class="sv" data-mode="brands" src="media/prime.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="startups" src="media/keyring-saas.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="creators" src="media/cristian.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="agencies" src="media/level4.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="entertainment" src="media/keyring-film.mp4" muted loop playsinline preload="auto"></video></div>
+        <p class="aud-desc" id="aud-desc" aria-live="polite"></p>
       </div>
     </div>
   </div>
@@ -1102,20 +1073,11 @@ function drawDots(dt) {
 
 /* ================= who we work with ================= */
 const stg = $('#stage');
-const WHO = {
-  brands: ['Made for', [['Prime Interiors', 'Brand reel'], ['Real estate', 'Property edits'], ['ShowDown', 'Product video']]],
-  startups: ['Made for', [['ShowDown', 'Launch video'], ['SaaS products', 'Product explainers']]],
-  creators: ['Creators we edit for', [['DRK Talks', '<em>1.1M</em> YouTube · <em>363K</em> Instagram'], ['Techonfreak', '<em>266K</em> Instagram'], ['Fizzer', '<em>116K</em> YouTube'], ['Priyanka Pareekk', '<em>100K</em> Instagram'], ['Solo Monster', '<em>11K</em> YouTube']]],
-  agencies: ['Ready to scale with you', [['<em>3000+</em>', 'videos delivered'], ['<em>50+</em>', 'clients served'], ['<em>15</em>', 'person team']]],
-  entertainment: ['Made for', [['PUBG Mobile', 'Tencent · 3D reels'], ['Zee Studios × Mini Films', 'Aankhon Ki Gustaakhiyan · 3D VFX']]],
-};
 let mode = '';
 function setMode(m) {
   if (m === mode) return; mode = m;
-  $$('.aud-btn').forEach(b => { const on = b.dataset.mode === m; b.setAttribute('aria-selected', on); if (on) { $('#aud-desc').textContent = b.dataset.desc; const n = $('#aud-name'), k = $('#aud-k'); n.textContent = b.textContent; k.textContent = `0${AUDS.indexOf(m) + 1} / 0${AUDS.length}`; [n, k].forEach(x => { x.style.animation = 'none'; x.offsetWidth; x.style.animation = ''; }); } });
+  $$('.aud-btn').forEach(b => { const on = b.dataset.mode === m; b.setAttribute('aria-selected', on); if (on) $('#aud-desc').textContent = b.dataset.desc; });
   $$('.sv', stg).forEach(v => { const on = v.dataset.mode === m; v.classList.toggle('on', on); if (on && !RM) { v.currentTime = 0; v.play().catch(() => {}); } else v.pause(); });
-  const [h, rows] = WHO[m];
-  $('#aud-who').innerHTML = `<small>${h}</small><ul>${rows.map((r, k) => `<li style="animation-delay:${k * 60}ms"><b>${r[0]}</b><span>${r[1]}</span></li>`).join('')}</ul>`;
 }
 let hoverT;
 const AUDS = $$('.aud-btn').map(b => b.dataset.mode);
@@ -1127,19 +1089,6 @@ $$('.aud-btn').forEach(b => {
     if (['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft'].includes(e.key)) { const k = AUDS.indexOf(mode) + (e.key === 'ArrowDown' || e.key === 'ArrowRight' ? 1 : -1), n = AUDS[(k + AUDS.length) % AUDS.length]; setMode(n); $(`.aud-btn[data-mode="${n}"]`).focus(); e.preventDefault(); }
   });
 });
-
-/* who we work with: moves to the next audience every 7s while the section is on screen; hovering holds it */
-const audEl = $('#explore .aud'); let audT = 0, audSeen = false, audHold = false;
-function audArm() {
-  clearTimeout(audT); audEl.classList.remove('auto');
-  if (RM || !audSeen || audHold) return;
-  void audEl.offsetWidth; audEl.classList.add('auto');
-  audT = setTimeout(() => { setMode(AUDS[(AUDS.indexOf(mode) + 1) % AUDS.length]); audArm(); }, 7000);
-}
-audEl.addEventListener('pointerenter', () => { audHold = true; audArm(); });
-audEl.addEventListener('pointerleave', () => { audHold = false; audArm(); });
-$$('.aud-btn').forEach(b => b.addEventListener('click', audArm));
-new IntersectionObserver(es => { audSeen = es[0].isIntersecting; audArm(); }, { threshold: .4 }).observe(audEl);
 
 const counters = $$('[data-count]');
 const cio = new IntersectionObserver(es => es.forEach(e => {
