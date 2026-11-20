@@ -493,6 +493,19 @@ body,.how,.foot,.explore,.cta{background:#000}
 .step small{color:#8C8BE6}
 .step small::before{content:"";display:block;width:28px;height:2px;background:var(--indigo);margin-bottom:12px}
 .cap h3::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--yellow);margin-right:10px;vertical-align:.12em}
+/* Phones: services and process stay compact */
+@media (max-width:600px){
+#capabilities,#how{padding-top:64px;padding-bottom:64px}
+#capabilities .caps,#how .steps{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 16px;margin-top:24px}
+#capabilities .cap h3{font-size:16px;margin-bottom:8px}
+#capabilities .cap h3::before{width:6px;height:6px;margin-right:7px}
+#capabilities .cap ul{font-size:13.5px;gap:3px}
+#how .step h3{font-size:16px;margin-bottom:4px}
+#how .step p{font-size:13.5px;line-height:1.4}
+#how .step small{margin-bottom:8px}
+#how .step small::before{width:20px;margin-bottom:8px}
+#capabilities .close,#how .close{margin-top:24px;font-size:15px}
+}
 .aud-btn[aria-selected="true"]{box-shadow:inset 3px 0 0 var(--indigo);padding-left:14px}
 .btn-g:hover{background:#fff;border-color:#fff;color:var(--ink)}
 .proof-stats span{color:#8C8BE6}
