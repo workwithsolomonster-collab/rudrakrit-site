@@ -556,7 +556,7 @@ body,.how,.foot,.explore,.cta{background:#000}
     <nav class="nav-links" aria-label="Main">
       <a href="#work">Work</a>
       <a href="#capabilities">Services</a>
-      <a class="cta-pill" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=hello@example.com" target="_blank" rel="noopener">Let's work together</a>
+      <a class="cta-pill" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=aaravraj.rudrakrit@gmail.com" target="_blank" rel="noopener">Let's work together</a>
     </nav>
   </div>
 </header>
@@ -571,7 +571,7 @@ body,.how,.foot,.explore,.cta{background:#000}
       <p>We work alongside your team, bringing creative thinking and production expertise together to make your ideas happen.</p>
       <p class="soft">Video production, editing, 3D, AI, motion graphics, design and more, all working together, alongside your team.</p>
     </div>
-    <div class="ctas"><a class="btn-p" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=hello@example.com" target="_blank" rel="noopener">Let's work together</a><a class="btn-g" href="#work">Explore our work</a></div>
+    <div class="ctas"><a class="btn-p" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=aaravraj.rudrakrit@gmail.com" target="_blank" rel="noopener">Let's work together</a><a class="btn-g" href="#work">Explore our work</a></div>
   </div>
   <div class="reel intro-anim d4" id="reel" data-cursor="pause" tabindex="0" role="button" aria-label="Showreel. Press to pause or play">
     <div class="reel-ui">
@@ -696,7 +696,7 @@ body,.how,.foot,.explore,.cta{background:#000}
         <button class="blob" id="blob" aria-label="Start a conversation: copy our email address"><span class="bl">Start a<br>conversation<span class="arw"><svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg><svg class="pl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 3.6 2.9 10.6c-.8.3-.8 1.5.1 1.8l4.6 1.5 1.8 5.5c.3.8 1.2 1 1.8.4l2.6-2.5 4.8 3.5c.7.5 1.6.1 1.8-.7l2.9-14.9c.2-.9-.6-1.5-1.4-1.1Z"/><path d="m7.6 13.9 10.6-7-8 8.4"/></svg></span></span></button>
       </div>
       <div class="act-copy">
-        <div class="mail"><code id="mail" role="button" tabindex="0" title="Click to copy" aria-label="Copy email address hello@example.com">hello@example.com</code><a class="btn-s" id="copy" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=hello@example.com" target="_blank" rel="noopener">Send mail</a></div>
+        <div class="mail"><code id="mail" role="button" tabindex="0" title="Click to copy" aria-label="Copy email address aaravraj.rudrakrit@gmail.com">aaravraj.rudrakrit@gmail.com</code><a class="btn-s" id="copy" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=aaravraj.rudrakrit@gmail.com" target="_blank" rel="noopener">Send mail</a></div>
       </div>
     </div>
 
@@ -1234,14 +1234,13 @@ $('#intro').prepend(dotsCv);
 const navEl = $('.nav');
 function navTone() { navEl.style.visibility = 'hidden'; const el = document.elementFromPoint(innerWidth / 2, 34); navEl.style.visibility = ''; navEl.classList.toggle('light', false); }
 addEventListener('scroll', navTone, { passive: true });
-/* more work: one clip at a time; hover plays it on desktop, a click or tap plays or pauses it */
+/* more work: one clip at a time; a click or tap plays or pauses it */
 const mws = $$('.mw');
 const hoverable = matchMedia('(hover: hover)').matches;
 let mwOn = null;
 function mwStop(m) { if (!m) return; m.classList.remove('on'); $('video', m).pause(); m.dataset.cursor = 'play'; if (mwOn === m) mwOn = null; }
 function mwPlay(m) { if (RM) return; if (mwOn && mwOn !== m) mwStop(mwOn); mwOn = m; m.classList.add('on'); $('video', m).play().catch(() => {}); m.dataset.cursor = 'pause'; }
 mws.forEach(m => {
-  if (hoverable) { m.addEventListener('pointerenter', () => { mwPlay(m); cursorRefresh(); }); m.addEventListener('pointerleave', () => { mwStop(m); cursorRefresh(); }); }
   m.addEventListener('click', () => { m.classList.contains('on') ? mwStop(m) : mwPlay(m); cursorRefresh(); });
 });
 
