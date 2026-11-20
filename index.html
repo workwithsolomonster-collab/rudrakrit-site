@@ -590,11 +590,10 @@ body,.how,.foot,.explore,.cta{background:#000}
     <div class="sec-head">
       <div>
         <h2 id="h-work">Work across industries. Quality across every project.</h2>
-        <p class="intro">Every project asks for something different. Here's some of what we've brought to the screen.</p>
       </div>
     </div>
     <div class="wf" role="group" aria-label="Filter projects">
-      <button data-cat="all" aria-pressed="true">All work</button><button data-cat="creators" aria-pressed="false">Creators</button><button data-cat="business" aria-pressed="false">Business</button><button data-cat="advertising" aria-pressed="false">Advertising</button><button data-cat="film" aria-pressed="false">Film &amp; stories</button>
+      <button data-cat="all" aria-pressed="true">All work</button><button data-cat="edit" aria-pressed="false">Editing</button><button data-cat="3d" aria-pressed="false">3D</button><button data-cat="vfx" aria-pressed="false">VFX</button><button data-cat="motion" aria-pressed="false">Motion</button>
     </div>
   </div>
   <div class="cf" id="cf" tabindex="0" aria-roledescription="carousel" aria-label="Selected work" data-cursor="drag">
@@ -886,18 +885,18 @@ let resizeT; addEventListener('resize', () => { clearTimeout(resizeT); resizeT =
 
 /* ================= projects ================= */
 const P = [
-  { v: 'media/keyring-film.mp4', title: 'Monsoon Letters', client: 'Short film', cat: 'film', scene: 'horizon', pal: [C.k, '#2F2D86', C.c, '#F8C29A'], svc: 'Video production, Editing, Colour', dur: 134 },
-  { v: 'media/keyring-saas.mp4', title: 'Orbit One', client: 'Product launch', cat: 'business', scene: 'orbit', pal: ['#1B1B1B', C.i, C.c, C.p], svc: '3D, Motion', dur: 45 },
-  { v: 'media/cristian.mp4', title: 'Loop Season', client: 'Creator series', cat: 'creators', scene: 'vertical', pal: [C.k, C.c, C.i, C.y], svc: 'Short-form editing, Captions', dur: 30 },
-  { v: 'media/level4.mp4', title: 'Say It Louder', client: 'Campaign', cat: 'advertising', scene: 'poster', pal: [C.y, C.i, C.c], svc: 'Concept, Motion, Cut-downs', dur: 20 },
-  { v: 'media/sample-edit.mp4', title: 'Chai, Slowly', client: 'Brand film', cat: 'business', scene: 'product', pal: ['#E3DFD4', C.i, C.c, C.k, 'CHAI'], svc: '3D product, Direction', dur: 60 },
-  { v: 'media/main-edit.mp4', title: 'Dreamstate', client: 'AI short film', cat: 'film', scene: 'blob', pal: ['#14132E', C.i, C.c, C.y], svc: 'AI, Edit, Sound design', dur: 168 },
-  { v: 'media/level5.mp4', title: 'Kinetic Type', client: 'Creator toolkit', cat: 'creators', scene: 'stripes', pal: [C.k, C.c, C.y, C.i], svc: 'Motion, Templates', dur: 15 },
-  { v: 'media/keyring-saas.mp4', title: 'Forty Cut-downs', client: 'Ad versioning', cat: 'advertising', scene: 'timeline', pal: ['#171717', C.c, C.i, C.y, 0, 7], svc: 'Editing, Versioning', dur: 30 },
-  { v: 'media/keyring-film.mp4', title: 'Night Market', client: 'Music video', cat: 'film', scene: 'horizon', pal: ['#0E0E1A', '#141236', C.i, C.c], svc: 'Direction, Edit, VFX', dur: 212 },
-  { v: 'media/prime.mp4', title: 'Prime Interiors', client: 'Brand reel', cat: 'business', scene: 'timeline', pal: ['#1E1D3F', C.y, C.p, C.c, 0, 11], svc: 'Interview edit, Motion graphics, Captions', dur: 42 },
+  { v: 'media/mw-shelby.mp4', title: 'Shelby Set', client: 'PUBG Mobile', cat: '3d', scene: 'horizon', pal: [C.k, '#2F2D86', C.c, '#F8C29A'], svc: '3D, Animation', dur: 10 },
+  { v: 'media/mw-bridge.mp4', title: 'The Bridge', client: 'Aankhon Ki Gustaakhiyan', cat: 'vfx', scene: 'orbit', pal: ['#1B1B1B', C.i, C.c, C.p], svc: '3D VFX', dur: 8 },
+  { v: 'media/mw-property.mp4', title: 'Property Tour', client: 'Real estate', cat: 'edit', scene: 'vertical', pal: [C.k, C.c, C.i, C.y], svc: 'Editing', dur: 10 },
+  { v: 'media/mw-dravion.mp4', title: 'Dravion X Suit', client: 'PUBG Mobile', cat: '3d', scene: 'poster', pal: [C.y, C.i, C.c], svc: '3D, Animation', dur: 10 },
+  { v: 'media/mw-showdown.mp4', title: 'ShowDown Launch', client: 'Product video', cat: 'motion', scene: 'product', pal: ['#E3DFD4', C.i, C.c, C.k, 'SHOW'], svc: 'Motion', dur: 10 },
+  { v: 'media/mw-train.mp4', title: 'The Train', client: 'Aankhon Ki Gustaakhiyan', cat: 'vfx', scene: 'blob', pal: ['#14132E', C.i, C.c, C.y], svc: '3D VFX', dur: 11 },
+  { v: 'media/level5.mp4', title: 'Short-form Edit', client: 'Creator content', cat: 'edit', scene: 'stripes', pal: [C.k, C.c, C.y, C.i], svc: 'Editing', dur: 14 },
+  { v: 'media/mw-jadefang.mp4', title: 'Jadefang Aurora', client: 'PUBG Mobile', cat: '3d', scene: 'timeline', pal: ['#171717', C.c, C.i, C.y, 0, 7], svc: '3D, Animation', dur: 10 },
+  { v: 'media/mw-m416.mp4', title: 'M416 Fool Set', client: 'PUBG Mobile', cat: '3d', scene: 'horizon', pal: ['#0E0E1A', '#141236', C.i, C.c], svc: '3D, Animation', dur: 10 },
+  { v: 'media/sample-edit.mp4', title: 'Story Edit', client: 'Brand content', cat: 'edit', scene: 'timeline', pal: ['#1E1D3F', C.y, C.p, C.c, 0, 11], svc: 'Editing', dur: 14 },
 ];
-const CAT = { creators: ['Creators', C.c], business: ['Business', C.i], advertising: ['Advertising', C.y], film: ['Film & stories', C.p] };
+const CAT = { edit: ['Editing', C.c], '3d': ['3D', C.i], vfx: ['VFX', C.p], motion: ['Motion', C.y] };
 const fmtDur = s => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
 
 /* ================= 02 coverflow ================= */
