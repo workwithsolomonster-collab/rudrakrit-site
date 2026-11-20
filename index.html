@@ -459,23 +459,28 @@ body,.how,.foot,.explore,.cta{background:#000}
 .intro p,p.intro{margin:0;color:var(--mute-d);font-size:clamp(17px,1.4vw,20px);line-height:1.5}
 .sec-head p.intro{max-width:58ch;margin-top:22px}
 .close{margin:var(--g1) 0 0;font-size:clamp(15px,1.2vw,17px);font-weight:400;letter-spacing:-.01em;color:rgba(244,242,236,.45)}
-/* Who we work with: five panels side by side; the chosen one opens wide and plays its clip */
-.aud{display:flex;gap:10px;height:clamp(420px,62vh,620px);margin-top:var(--g1)}
-.aud-btn{position:relative;flex:1 1 0;min-width:0;overflow:hidden;border-radius:10px;background:#0d0d0d;text-align:left;color:var(--paper);transition:flex-grow .8s var(--ease)}
-.aud-btn[aria-selected="true"]{flex-grow:4.2}
-.aud-btn .sv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.28;filter:grayscale(1);transform:scale(1.06);transition:opacity .7s var(--ease),filter .7s var(--ease),transform 1.2s var(--ease)}
-.aud-btn:hover .sv{opacity:.45}
-.aud-btn[aria-selected="true"] .sv{opacity:1;filter:none;transform:none}
-.aud-btn::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),transparent 30%,transparent 50%,rgba(0,0,0,.82));pointer-events:none}
-.ap-n{position:absolute;left:16px;top:14px;z-index:2;font-family:var(--f-mono);font-size:12px;color:var(--mute-d);transition:color .4s}
-.aud-btn[aria-selected="true"] .ap-n{color:var(--yellow)}
-.ap-txt{position:absolute;left:16px;right:16px;bottom:16px;z-index:2;display:flex;flex-direction:column;gap:10px}
-.ap-t{font-weight:700;font-size:clamp(14px,1.1vw,16px);letter-spacing:-.02em;line-height:1.15;color:rgba(244,242,236,.7);transition:font-size .6s var(--ease),color .4s}
-.aud-btn:hover .ap-t{color:var(--paper)}
-.aud-btn[aria-selected="true"] .ap-t{font-size:clamp(22px,2.2vw,32px);letter-spacing:-.04em;color:var(--paper)}
-.ap-d{max-width:42ch;font-size:clamp(14px,1.1vw,16px);line-height:1.45;color:rgba(244,242,236,.82);max-height:0;opacity:0;overflow:hidden;transition:opacity .4s var(--ease),max-height .6s var(--ease)}
-.aud-btn[aria-selected="true"] .ap-d{max-height:8em;opacity:1;transition-delay:.25s}
-@media (max-width:860px){.aud{flex-direction:column;height:auto}.aud-btn{flex:none;height:64px;transition:height .7s var(--ease)}.aud-btn[aria-selected="true"]{height:440px}.aud-btn:not([aria-selected="true"]) .ap-n{top:auto;bottom:24px}.aud-btn:not([aria-selected="true"]) .ap-txt{left:52px;bottom:22px}}
+.aud{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:28px 56px;margin-top:var(--g1);align-items:start}
+.aud-list{display:flex;flex-direction:column}
+.aud-btn{text-align:left;font-weight:700;font-size:clamp(18px,1.6vw,24px);letter-spacing:-.03em;line-height:1.1;padding:9px 0;color:rgba(244,242,236,.2);transition:color .4s var(--ease),transform .4s var(--ease)}
+.aud-btn:hover{color:rgba(244,242,236,.5)}
+.aud-btn[aria-selected="true"]{color:var(--paper);transform:translateX(10px)}
+.aud-desc{margin:16px 0 0;font-size:clamp(16px,1.4vw,19px);line-height:1.45;max-width:46ch;color:var(--paper)}
+@media (max-width:860px){.aud{grid-template-columns:1fr}.aud-btn[aria-selected="true"]{transform:none}}
+/* Who we work with: clip on the left, who we've made it for on the right */
+.aud-view{display:grid;grid-template-columns:minmax(200px,300px) minmax(0,1fr);gap:20px 36px;align-items:end}
+.aud-view .stage{grid-column:1;grid-row:1;aspect-ratio:9/16;width:100%;border-radius:10px}
+.aud-view .sv{object-fit:cover}
+.aud-info{grid-column:2;grid-row:1;display:flex;flex-direction:column;gap:28px;padding-bottom:4px}
+.aud-info .aud-desc{margin:0}
+.aud-who small{display:block;font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--yellow);margin-bottom:10px}
+.aud-who ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--line-d)}
+.aud-who li{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-bottom:1px solid var(--line-d);opacity:0;transform:translateY(8px);animation:whoIn .5s var(--ease) forwards}
+.aud-who b{font-size:clamp(16px,1.4vw,20px);font-weight:700;letter-spacing:-.02em}
+.aud-who span{font-size:13px;color:var(--mute-d);text-align:right}
+.aud-who span em{font-style:normal;color:var(--paper)}
+@keyframes whoIn{to{opacity:1;transform:none}}
+@media (max-width:860px){.aud-view{grid-template-columns:minmax(0,1fr)}.aud-view .stage{max-width:300px}.aud-info{grid-column:1;grid-row:auto}}
+@media (prefers-reduced-motion:reduce){.aud-who li{animation:none;opacity:1;transform:none}}
 .caps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px;margin-top:var(--g1)}
 .cap h3,.pt-item h3,.step h3{margin:0 0 12px;font-size:clamp(19px,1.6vw,23px);font-weight:700;letter-spacing:-.025em;line-height:1.15}
 .cap ul{list-style:none;margin:0;padding:0;display:grid;gap:7px;color:var(--mute-d);font-size:16px}
@@ -502,7 +507,7 @@ body,.how,.foot,.explore,.cta{background:#000}
 .step small{color:#8C8BE6}
 .step small::before{content:"";display:block;width:28px;height:2px;background:var(--indigo);margin-bottom:12px}
 .cap h3::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--yellow);margin-right:10px;vertical-align:.12em}
-
+.aud-btn[aria-selected="true"]{box-shadow:inset 3px 0 0 var(--indigo);padding-left:14px}
 .btn-g:hover{background:#fff;border-color:#fff;color:var(--ink)}
 .proof-stats span{color:#8C8BE6}
 
@@ -610,32 +615,21 @@ body,.how,.foot,.explore,.cta{background:#000}
 <section class="explore band" id="explore" aria-labelledby="h-explore">
   <div class="wrap">
     <h2 class="h2" id="h-explore">Whatever you're building, we can create alongside you.</h2>
-    <div class="aud" role="tablist" aria-label="Who we work with">
-      <button class="aud-btn" role="tab" data-mode="brands" aria-selected="true" data-cursor="play">
-        <video class="sv" src="media/prime.mp4#t=0.8" muted loop playsinline preload="metadata"></video>
-        <span class="ap-n">01</span>
-        <span class="ap-txt"><span class="ap-t">Brands &amp; Businesses</span><span class="ap-d">For brands that need creative work to keep their communication moving, from product videos and campaigns to everyday content.</span></span>
-      </button>
-      <button class="aud-btn" role="tab" data-mode="startups" aria-selected="false" data-cursor="play">
-        <video class="sv" src="media/keyring-saas.mp4#t=0.8" muted loop playsinline preload="metadata"></video>
-        <span class="ap-n">02</span>
-        <span class="ap-txt"><span class="ap-t">Startups &amp; Growing Teams</span><span class="ap-d">For teams building something new and looking for creative support that can grow with them.</span></span>
-      </button>
-      <button class="aud-btn" role="tab" data-mode="creators" aria-selected="false" data-cursor="play">
-        <video class="sv" src="media/cristian.mp4#t=0.8" muted loop playsinline preload="metadata"></video>
-        <span class="ap-n">03</span>
-        <span class="ap-txt"><span class="ap-t">Creators &amp; Media</span><span class="ap-d">For creators who need a consistent production partner to develop, produce and deliver content.</span></span>
-      </button>
-      <button class="aud-btn" role="tab" data-mode="agencies" aria-selected="false" data-cursor="play">
-        <video class="sv" src="media/level4.mp4#t=0.8" muted loop playsinline preload="metadata"></video>
-        <span class="ap-n">04</span>
-        <span class="ap-txt"><span class="ap-t">Agencies &amp; Marketing Teams</span><span class="ap-d">For teams that need additional creative and production capabilities without expanding their in-house setup.</span></span>
-      </button>
-      <button class="aud-btn" role="tab" data-mode="entertainment" aria-selected="false" data-cursor="play">
-        <video class="sv" src="media/keyring-film.mp4#t=0.8" muted loop playsinline preload="metadata"></video>
-        <span class="ap-n">05</span>
-        <span class="ap-txt"><span class="ap-t">Entertainment &amp; Gaming</span><span class="ap-d">For projects that call for specialised visual execution, 3D, VFX, motion and production.</span></span>
-      </button>
+    <div class="aud">
+      <div class="aud-list" role="tablist" aria-label="Who we work with">
+        <button class="aud-btn" role="tab" data-mode="brands" aria-selected="true" data-desc="For brands that need creative work to keep their communication moving, from product videos and campaigns to everyday content.">Brands &amp; Businesses</button>
+        <button class="aud-btn" role="tab" data-mode="startups" aria-selected="false" data-desc="For teams building something new and looking for creative support that can grow with them.">Startups &amp; Growing Teams</button>
+        <button class="aud-btn" role="tab" data-mode="creators" aria-selected="false" data-desc="For creators who need a consistent production partner to develop, produce and deliver content.">Creators &amp; Media</button>
+        <button class="aud-btn" role="tab" data-mode="agencies" aria-selected="false" data-desc="For teams that need additional creative and production capabilities without expanding their in-house setup.">Agencies &amp; Marketing Teams</button>
+        <button class="aud-btn" role="tab" data-mode="entertainment" aria-selected="false" data-desc="For projects that call for specialised visual execution, 3D, VFX, motion and production.">Entertainment &amp; Gaming</button>
+      </div>
+      <div class="aud-view">
+        <div class="stage" id="stage" role="tabpanel" aria-label="Preview"><video class="sv" data-mode="brands" src="media/prime.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="startups" src="media/keyring-saas.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="creators" src="media/cristian.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="agencies" src="media/level4.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="entertainment" src="media/mw-shelby.mp4" muted loop playsinline preload="auto"></video></div>
+        <div class="aud-info">
+          <p class="aud-desc" id="aud-desc" aria-live="polite"></p>
+          <div class="aud-who" id="aud-who"></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1101,10 +1095,21 @@ function drawDots(dt) {
 }
 
 /* ================= who we work with ================= */
+const stg = $('#stage');
+const WHO = {
+  brands: ['Made for', [['Prime Interiors', 'Brand reel'], ['Real estate', 'Property edits'], ['ShowDown', 'Product video']]],
+  startups: ['Made for', [['ShowDown', 'Launch video'], ['SaaS products', 'Product explainers']]],
+  creators: ['Creators we edit for', [['DRK Talks', '<em>1.1M</em> YouTube · <em>363K</em> Instagram'], ['Techonfreak', '<em>266K</em> Instagram'], ['Fizzer', '<em>116K</em> YouTube'], ['Priyanka Pareekk', '<em>100K</em> Instagram'], ['Solo Monster', '<em>11K</em> YouTube']]],
+  agencies: ['Ready to scale with you', [['<em>3000+</em>', 'videos delivered'], ['<em>50+</em>', 'clients served'], ['<em>15</em>', 'person team']]],
+  entertainment: ['Made for', [['PUBG Mobile', 'Tencent · 3D reels'], ['Zee Studios × Mini Films', 'Aankhon Ki Gustaakhiyan · 3D VFX']]],
+};
 let mode = '';
 function setMode(m) {
   if (m === mode) return; mode = m;
-  $$('.aud-btn').forEach(b => { const on = b.dataset.mode === m, v = $('.sv', b); b.setAttribute('aria-selected', on); b.dataset.cursor = on ? 'pause' : 'play'; if (on && !RM) { v.currentTime = 0; v.play().catch(() => {}); } else v.pause(); });
+  $$('.aud-btn').forEach(b => { const on = b.dataset.mode === m; b.setAttribute('aria-selected', on); if (on) $('#aud-desc').textContent = b.dataset.desc; });
+  $$('.sv', stg).forEach(v => { const on = v.dataset.mode === m; v.classList.toggle('on', on); if (on && !RM) { v.currentTime = 0; v.play().catch(() => {}); } else v.pause(); });
+  const [h, rows] = WHO[m];
+  $('#aud-who').innerHTML = `<small>${h}</small><ul>${rows.map((r, k) => `<li style="animation-delay:${k * 60}ms"><b>${r[0]}</b><span>${r[1]}</span></li>`).join('')}</ul>`;
 }
 let hoverT;
 const AUDS = $$('.aud-btn').map(b => b.dataset.mode);
