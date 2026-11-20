@@ -534,7 +534,7 @@ body,.how,.foot,.explore,.cta{background:#000}
     <div class="reel-ui">
       <div class="reel-top"><span class="rec" id="reel-state">Showreel · Playing</span><span class="hide-s">16:9 · 24 fps · 4K</span></div>
       <div class="reel-bot">
-        <div class="reel-title" id="reel-title"><small id="reel-cat">Film &amp; stories</small><b id="reel-name">Monsoon Letters</b></div>
+        <div class="reel-title" id="reel-title" hidden><small id="reel-cat">Film &amp; stories</small><b id="reel-name">Monsoon Letters</b></div>
         <div class="scrub" id="scrub"></div>
         <div class="reel-meta"><span id="reel-tc">00:00:00:00</span><span class="hide-s" id="reel-n">01 / 06</span><span>Rudrakrit — Reel 2026</span></div>
       </div>
@@ -938,8 +938,8 @@ cf.addEventListener('wheel', e => {
 
 /* ================= 01 hero showreel ================= */
 const reel = $('#reel'), REEL = [0, 5, 3, 1, 2, 8].map(i => P[i]);
-const SHOT = 3;
-const rv = document.createElement('video'); rv.src = 'media/showreel.mp4'; rv.muted = true; rv.loop = true; rv.playsInline = true; rv.autoplay = !RM; rv.preload = 'auto'; rv.setAttribute('muted', ''); rv.setAttribute('playsinline', ''); reel.prepend(rv);
+let SHOT = 68 / 6; /* the v7 reel carries its own titles; the scrub splits its length into 6 equal parts */
+const rv = document.createElement('video'); rv.src = 'media/showreel-v7.mp4'; rv.addEventListener('loadedmetadata', () => { if (rv.duration) SHOT = rv.duration / REEL.length; }); rv.muted = true; rv.loop = true; rv.playsInline = true; rv.autoplay = !RM; rv.preload = 'auto'; rv.setAttribute('muted', ''); rv.setAttribute('playsinline', ''); reel.prepend(rv);
 let rw = 1;
 function sizeReel() {}
 let reelT = 0, reelPlaying = !RM, reelShot = -1, reelVisible = true;
