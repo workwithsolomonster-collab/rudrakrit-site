@@ -154,7 +154,7 @@ main > section > *, .foot > *{position:relative}
 .work .eyebrow{color:var(--mute-d)}
 
 .cf{position:relative;height:clamp(440px,52vw,600px);margin-top:12px;perspective:1300px;perspective-origin:50% 45%;touch-action:pan-y;user-select:none;-webkit-user-select:none;outline:none}
-.cf-stage{position:absolute;inset:0;transform-style:preserve-3d}
+.cf-stage{position:absolute;inset:0;transform-style:preserve-3d;pointer-events:none}
 .card{position:absolute;left:50%;top:50%;width:clamp(240px,27vw,350px);transform-style:preserve-3d;will-change:transform;border-radius:8px;background:#121212;border:1px solid rgba(244,242,236,.09);padding:12px;box-shadow:0 30px 60px rgba(0,0,0,.45)}
 .card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;padding:4px 4px 12px}
 .card-head h3{margin:0;font-size:17px;font-weight:700;letter-spacing:-.02em;line-height:1.2}
@@ -590,7 +590,7 @@ body,.how,.foot,.explore,.cta{background:#000}
       </div>
     </div>
     <div class="wf" role="group" aria-label="Filter projects">
-      <button data-cat="all" aria-pressed="true">All work</button><button data-cat="creators" aria-pressed="false">Creators</button><button data-cat="brands" aria-pressed="false">Brands</button><button data-cat="gaming" aria-pressed="false">Gaming &amp; 3D</button><button data-cat="film" aria-pressed="false">Film &amp; VFX</button>
+      <button data-cat="all" aria-pressed="true">All work</button><button data-cat="creators" aria-pressed="false">Creators</button><button data-cat="brands" aria-pressed="false">Business</button><button data-cat="gaming" aria-pressed="false">Advertising</button><button data-cat="film" aria-pressed="false">Film &amp; stories</button>
     </div>
   </div>
   <div class="cf" id="cf" tabindex="0" aria-roledescription="carousel" aria-label="Selected work" data-cursor="drag">
@@ -895,7 +895,7 @@ const P = [
   { v: 'media/full-jadefang.mp4', title: 'Jadefang Aurora', client: 'PUBG Mobile', cat: 'gaming', scene: 'blob', pal: ['#14132E', C.i, C.c, C.y], svc: '3D, Animation', dur: 34 },
   { v: 'media/full-main-edit.mp4', title: 'Ryan Pictures', client: 'YouTube edit', cat: 'creators', scene: 'stripes', pal: [C.k, C.c, C.y, C.i], svc: 'Edit, Motion graphics', dur: 34 },
 ];
-const CAT = { creators: ['Creators', C.c], brands: ['Brands', C.i], gaming: ['Gaming & 3D', C.y], film: ['Film & VFX', C.p] };
+const CAT = { creators: ['Creators', C.c], brands: ['Business', C.i], gaming: ['Advertising', C.y], film: ['Film & stories', C.p] };
 const fmtDur = s => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
 
 /* ================= 02 coverflow ================= */
@@ -944,9 +944,11 @@ function layoutCF(force) {
   if (a !== lastActive) {
     lastActive = a; cards.forEach(c => { c.userPaused = false; if (c.clip.video) c.clip.video.muted = true; });
     if (playing !== -1 && playing !== a) stopPlay();
+    if (pendingPlay === a) { pendingPlay = -1; toggleCard(a); }
     cursorRefresh();
   }
 }
+var pendingPlay = -1;
 function startPlay(i) { stopPlay(); playing = i; cards[i].el.classList.add('playing'); layoutCF(); cursorRefresh(); }
 function toggleCard(i) { const v = cards[i].clip.video; if (playing === i) { cards[i].userPaused = true; stopPlay(); } else { cards[i].userPaused = false; if (v) { v.muted = false; v.currentTime = 0; } startPlay(i); } }
 function stopPlay() { if (playing < 0) return; cards[playing].el.classList.remove('playing'); playing = -1; layoutCF(); cursorRefresh(); }
@@ -971,7 +973,7 @@ addEventListener('pointerup', e => {
   if (drag.moved) { target = Math.round(target - drag.v * 2.2); }
   else {
     const card = e.target.closest('.card');
-    if (card) { const i = +card.dataset.i; if (i === activeIdx() && Math.abs(target - pos) < .3) { toggleCard(i); } else goTo(i); }
+    if (card) { const i = +card.dataset.i; if (i === activeIdx() && Math.abs(target - pos) < .3) { toggleCard(i); } else if (i === activeIdx()) { toggleCard(i); } else { pendingPlay = i; goTo(i); } }
   }
   drag = null;
 });
