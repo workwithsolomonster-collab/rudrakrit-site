@@ -619,7 +619,7 @@ body,.how,.foot,.explore,.cta{background:#000}
         <button class="aud-btn" role="tab" data-mode="films" aria-selected="false">Brand films</button>
       </div>
       <div class="aud-view">
-        <div class="stage" id="stage" role="tabpanel" aria-label="Preview"><video class="sv" data-mode="editing" src="media/main-edit.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="motion" src="media/mw-showdown.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="3d" src="media/mw-jadefang.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="vfx" src="media/mw-bridge.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="films" src="media/keyring-film.mp4" muted loop playsinline preload="auto"></video></div>
+        <div class="stage" id="stage" role="tabpanel" aria-label="Preview"><video class="sv" data-mode="editing" src="media/main-edit.mp4" muted loop playsinline preload="metadata"></video><video class="sv" data-mode="motion" src="media/mw-showdown.mp4" muted loop playsinline preload="metadata"></video><video class="sv" data-mode="3d" src="media/mw-jadefang.mp4" muted loop playsinline preload="metadata"></video><video class="sv" data-mode="vfx" src="media/mw-bridge.mp4" muted loop playsinline preload="metadata"></video><video class="sv" data-mode="films" src="media/keyring-film.mp4" muted loop playsinline preload="metadata"></video></div>
       </div>
     </div>
   </div>
@@ -866,7 +866,7 @@ const SCENES = {
 const clips = [];
 function makeCanvas(el, scene, pal, opts = {}) {
   if (opts.video) { // real footage: a muted looping <video> that the frame loop plays and pauses
-    const v = document.createElement('video'); v.src = opts.video; v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'auto'; v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
+    const v = document.createElement('video'); v.src = opts.video; v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'metadata'; v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
     el.prepend(v); const o = { cv: v, video: v, visible: true, dirty: false, w: 1, h: 1 }; clips.push(o); return o;
   }
   const cv = document.createElement('canvas'); el.prepend(cv);
@@ -999,7 +999,7 @@ cf.addEventListener('wheel', e => {
 /* ================= 01 hero showreel ================= */
 const reel = $('#reel'), REEL = [0, 5, 3, 1, 2, 8].map(i => P[i]);
 let SHOT = 68 / 6; /* the v7 reel carries its own titles; the scrub splits its length into 6 equal parts */
-const rv = document.createElement('video'); rv.src = 'media/showreel-v7.mp4'; rv.addEventListener('loadedmetadata', () => { if (rv.duration) SHOT = rv.duration / REEL.length; }); rv.muted = true; rv.loop = true; rv.playsInline = true; rv.autoplay = !RM; rv.preload = 'auto'; rv.setAttribute('muted', ''); rv.setAttribute('playsinline', ''); reel.prepend(rv);
+const rv = document.createElement('video'); rv.src = 'media/showreel-v8.mp4'; rv.poster = 'media/showreel-poster.jpg'; rv.addEventListener('loadedmetadata', () => { if (rv.duration) SHOT = rv.duration / REEL.length; }); rv.muted = true; rv.loop = true; rv.playsInline = true; rv.autoplay = !RM; rv.preload = 'auto'; rv.setAttribute('muted', ''); rv.setAttribute('playsinline', ''); reel.prepend(rv);
 let rw = 1;
 function sizeReel() {}
 let reelT = 0, reelPlaying = !RM, reelShot = -1, reelVisible = true;
@@ -1183,6 +1183,13 @@ if (fine) {
   addEventListener('pointerup', () => { cur.classList.remove('down'); cur.classList.remove('flash'); void cur.offsetWidth; cur.classList.add('flash'); setTimeout(cursorRefresh, 0); });
   addEventListener('scroll', () => { const el = document.elementFromPoint(mx, my); if (el && el !== hoverEl) { hoverEl = el; cursorRefresh(); } }, { passive: true });
   document.documentElement.addEventListener('pointerleave', () => { cpos.style.transform = 'translate3d(-500px,-500px,0)'; });
+}
+
+/* touch screens: a finger (tap or scroll) leaves the same dot trail as the mouse */
+if (!fine && !RM) {
+  const touchDots = e => { const t = e.touches && e.touches[0]; if (!t) return; const el = document.elementFromPoint(t.clientX, t.clientY); const sec = el && el.closest && el.closest('main > section, .foot'); if (sec && dotsCv.parentElement !== sec) sec.prepend(dotsCv); const x = t.clientX, y = t.clientY + scrollY; if (Math.hypot(x - lastPX, y - lastPY) < 9) return; lastPX = x; lastPY = y; trail.push({ x, y, life: 1 }); if (trail.length > 48) trail.shift(); };
+  addEventListener('touchstart', touchDots, { passive: true });
+  addEventListener('touchmove', touchDots, { passive: true });
 }
 
 /* ================= main loop ================= */
