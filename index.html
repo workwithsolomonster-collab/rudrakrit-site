@@ -900,15 +900,15 @@ let resizeT; addEventListener('resize', () => { clearTimeout(resizeT); resizeT =
 
 /* ================= projects ================= */
 const P = [
-  { v: 'media/keyring-film.mp4', title: 'Monsoon Letters', client: 'Short film', cat: 'film', scene: 'horizon', pal: [C.k, '#2F2D86', C.c, '#F8C29A'], svc: 'Video production, Editing, Colour', dur: 134 },
-  { v: 'media/keyring-saas.mp4', title: 'Orbit One', client: 'Product launch', cat: 'business', scene: 'orbit', pal: ['#1B1B1B', C.i, C.c, C.p], svc: '3D, Motion', dur: 45 },
-  { v: 'media/cristian.mp4', title: 'Loop Season', client: 'Creator series', cat: 'creators', scene: 'vertical', pal: [C.k, C.c, C.i, C.y], svc: 'Short-form editing, Captions', dur: 30 },
-  { v: 'media/level4.mp4', title: 'Say It Louder', client: 'Campaign', cat: 'advertising', scene: 'poster', pal: [C.y, C.i, C.c], svc: 'Concept, Motion, Cut-downs', dur: 20 },
-  { v: 'media/sample-edit.mp4', title: 'Chai, Slowly', client: 'Brand film', cat: 'business', scene: 'product', pal: ['#E3DFD4', C.i, C.c, C.k, 'CHAI'], svc: '3D product, Direction', dur: 60 },
-  { v: 'media/main-edit.mp4', title: 'Dreamstate', client: 'AI short film', cat: 'film', scene: 'blob', pal: ['#14132E', C.i, C.c, C.y], svc: 'AI, Edit, Sound design', dur: 168 },
-  { v: 'media/level5.mp4', title: 'Kinetic Type', client: 'Creator toolkit', cat: 'creators', scene: 'stripes', pal: [C.k, C.c, C.y, C.i], svc: 'Motion, Templates', dur: 15 },
-  { v: 'media/keyring-saas.mp4', title: 'Forty Cut-downs', client: 'Ad versioning', cat: 'advertising', scene: 'timeline', pal: ['#171717', C.c, C.i, C.y, 0, 7], svc: 'Editing, Versioning', dur: 30 },
-  { v: 'media/keyring-film.mp4', title: 'Night Market', client: 'Music video', cat: 'film', scene: 'horizon', pal: ['#0E0E1A', '#141236', C.i, C.c], svc: 'Direction, Edit, VFX', dur: 212 },
+  { v: 'media/full-keyring-film.mp4', title: 'Monsoon Letters', client: 'Short film', cat: 'film', scene: 'horizon', pal: [C.k, '#2F2D86', C.c, '#F8C29A'], svc: 'Video production, Editing, Colour', dur: 134 },
+  { v: 'media/full-keyring-saas.mp4', title: 'Orbit One', client: 'Product launch', cat: 'business', scene: 'orbit', pal: ['#1B1B1B', C.i, C.c, C.p], svc: '3D, Motion', dur: 45 },
+  { v: 'media/full-cristian.mp4', title: 'Loop Season', client: 'Creator series', cat: 'creators', scene: 'vertical', pal: [C.k, C.c, C.i, C.y], svc: 'Short-form editing, Captions', dur: 30 },
+  { v: 'media/full-level4.mp4', title: 'Say It Louder', client: 'Campaign', cat: 'advertising', scene: 'poster', pal: [C.y, C.i, C.c], svc: 'Concept, Motion, Cut-downs', dur: 20 },
+  { v: 'media/full-sample-edit.mp4', title: 'Chai, Slowly', client: 'Brand film', cat: 'business', scene: 'product', pal: ['#E3DFD4', C.i, C.c, C.k, 'CHAI'], svc: '3D product, Direction', dur: 60 },
+  { v: 'media/full-main-edit.mp4', title: 'Dreamstate', client: 'AI short film', cat: 'film', scene: 'blob', pal: ['#14132E', C.i, C.c, C.y], svc: 'AI, Edit, Sound design', dur: 168 },
+  { v: 'media/full-level5.mp4', title: 'Kinetic Type', client: 'Creator toolkit', cat: 'creators', scene: 'stripes', pal: [C.k, C.c, C.y, C.i], svc: 'Motion, Templates', dur: 15 },
+  { v: 'media/full-keyring-saas.mp4', title: 'Forty Cut-downs', client: 'Ad versioning', cat: 'advertising', scene: 'timeline', pal: ['#171717', C.c, C.i, C.y, 0, 7], svc: 'Editing, Versioning', dur: 30 },
+  { v: 'media/full-keyring-film.mp4', title: 'Night Market', client: 'Music video', cat: 'film', scene: 'horizon', pal: ['#0E0E1A', '#141236', C.i, C.c], svc: 'Direction, Edit, VFX', dur: 212 },
   { v: 'media/prime.mp4', title: 'Prime Interiors', client: 'Brand reel', cat: 'business', scene: 'timeline', pal: ['#1E1D3F', C.y, C.p, C.c, 0, 11], svc: 'Interview edit, Motion graphics, Captions', dur: 42 },
 ];
 const CAT = { creators: ['Creators', C.c], business: ['Business', C.i], advertising: ['Advertising', C.y], film: ['Film & stories', C.p] };
@@ -958,13 +958,13 @@ function layoutCF(force) {
   });
   const a = activeIdx();
   if (a !== lastActive) {
-    lastActive = a; cards.forEach(c => c.userPaused = false);
+    lastActive = a; cards.forEach(c => { c.userPaused = false; if (c.clip.video) c.clip.video.muted = true; });
     if (playing !== -1 && playing !== a) stopPlay();
     cursorRefresh();
   }
 }
 function startPlay(i) { stopPlay(); playing = i; cards[i].el.classList.add('playing'); layoutCF(); cursorRefresh(); }
-function toggleCard(i) { if (playing === i) { cards[i].userPaused = true; stopPlay(); } else { cards[i].userPaused = false; startPlay(i); } }
+function toggleCard(i) { const v = cards[i].clip.video; if (playing === i) { cards[i].userPaused = true; stopPlay(); } else { cards[i].userPaused = false; if (v) { v.muted = false; v.currentTime = 0; } startPlay(i); } }
 function stopPlay() { if (playing < 0) return; cards[playing].el.classList.remove('playing'); playing = -1; layoutCF(); cursorRefresh(); }
 
 /* drag / swipe */
