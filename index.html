@@ -464,7 +464,9 @@ body,.how,.foot,.explore,.cta{background:#000}
 .aud-btn{text-align:left;font-weight:700;font-size:clamp(18px,1.6vw,24px);letter-spacing:-.03em;line-height:1.1;padding:9px 0;color:rgba(244,242,236,.2);transition:color .4s var(--ease),transform .4s var(--ease)}
 .aud-btn:hover{color:rgba(244,242,236,.5)}
 .aud-btn[aria-selected="true"]{color:var(--paper);transform:translateX(10px)}
-.aud-view .stage{aspect-ratio:16/10;width:100%}
+.aud-view .stage{aspect-ratio:16/9;width:100%}
+#explore .sv{object-fit:cover}
+#explore .aud{align-items:center}
 .aud-desc{margin:16px 0 0;font-size:clamp(16px,1.4vw,19px);line-height:1.45;max-width:46ch;color:var(--paper)}
 @media (max-width:860px){.aud{grid-template-columns:1fr}.aud-btn[aria-selected="true"]{transform:none}}
 .caps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px;margin-top:var(--g1)}
@@ -554,7 +556,7 @@ body,.how,.foot,.explore,.cta{background:#000}
     <nav class="nav-links" aria-label="Main">
       <a href="#work">Work</a>
       <a href="#capabilities">Services</a>
-      <a class="cta-pill" href="#contact">Let's work together</a>
+      <a class="cta-pill" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=aaravraj.rudrakrit@gmail.com" target="_blank" rel="noopener">Let's work together</a>
     </nav>
   </div>
 </header>
@@ -569,7 +571,7 @@ body,.how,.foot,.explore,.cta{background:#000}
       <p>We work alongside your team, bringing creative thinking and production expertise together to make your ideas happen.</p>
       <p class="soft">Video production, editing, 3D, AI, motion graphics, design and more, all working together, alongside your team.</p>
     </div>
-    <div class="ctas"><a class="btn-p" href="#contact">Let's work together</a><a class="btn-g" href="#work">Explore our work</a></div>
+    <div class="ctas"><a class="btn-p" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=aaravraj.rudrakrit@gmail.com" target="_blank" rel="noopener">Let's work together</a><a class="btn-g" href="#work">Explore our work</a></div>
   </div>
   <div class="reel intro-anim d4" id="reel" data-cursor="pause" tabindex="0" role="button" aria-label="Showreel. Press to pause or play">
     <div class="reel-ui">
@@ -617,7 +619,7 @@ body,.how,.foot,.explore,.cta{background:#000}
         <button class="aud-btn" role="tab" data-mode="films" aria-selected="false">Brand films</button>
       </div>
       <div class="aud-view">
-        <div class="stage" id="stage" role="tabpanel" aria-label="Preview"><video class="sv" data-mode="editing" src="media/prime.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="motion" src="media/level4.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="3d" src="media/mw-dravion.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="vfx" src="media/mw-bridge.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="films" src="media/keyring-film.mp4" muted loop playsinline preload="auto"></video></div>
+        <div class="stage" id="stage" role="tabpanel" aria-label="Preview"><video class="sv" data-mode="editing" src="media/main-edit.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="motion" src="media/mw-showdown.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="3d" src="media/mw-jadefang.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="vfx" src="media/mw-bridge.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="films" src="media/keyring-film.mp4" muted loop playsinline preload="auto"></video></div>
       </div>
     </div>
   </div>
