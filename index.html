@@ -97,11 +97,12 @@ main > section > *, .foot > *{position:relative}
 .hero h1 .ln{display:block;white-space:nowrap}
 .hero h1 .pt{color:var(--yellow)}
 /* interactive headline: letters drop in, lift and warm toward the pointer, and a click sends a wave through them */
-.hero h1 .w{display:inline-block;white-space:nowrap}
-.hero h1 .ch{display:inline-block;transform-origin:50% 100%;will-change:transform;animation:chIn .9s var(--ease) both;animation-delay:calc(var(--i) * 28ms + .15s)}
+.prox .w{display:inline-block;white-space:nowrap}
+.prox .ch{display:inline-block;transform-origin:50% 100%}
+.hero h1 .ch{will-change:transform;animation:chIn .9s var(--ease) both;animation-delay:calc(var(--i) * 28ms + .15s)}
 @keyframes chIn{from{opacity:0;transform:translateY(.45em) rotate(6deg)}to{opacity:1;transform:none}}
 .hero h1.live .ch{animation:none}
-#h-intro{touch-action:pan-y;cursor:default}
+.prox{touch-action:pan-y}
 @media (prefers-reduced-motion:reduce){.hero h1 .ch{animation:none}}
 .hero h1 .hl{font-style:normal;color:var(--yellow)}
 .inl{display:inline-block;position:relative;width:1.55em;height:.74em;border-radius:.1em;overflow:hidden;vertical-align:.02em;margin:0 .06em;background:var(--ink-2);transform:rotate(-2deg);transition:transform .5s var(--ease),width .6s var(--ease)}
@@ -371,7 +372,7 @@ main > section > *, .foot > *{position:relative}
 .cta .eyebrow{color:rgba(255,255,255,.7)}
 .cta .eyebrow b{color:var(--yellow)}
 .cta h2{font-weight:800;font-size:clamp(30px,4.4vw,68px);line-height:.95;letter-spacing:-.05em;margin:0 0 var(--g1);text-wrap:balance}
-.cta h2 span{color:var(--yellow)}
+.cta h2 .yl{color:var(--yellow)}
 .cta-sub{font-size:clamp(17px,1.6vw,21px);margin:0 0 var(--g1);color:rgba(255,255,255,.82);max-width:40ch}
 .clips{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .clip{position:relative;text-align:left;border-radius:6px;overflow:hidden;background:#2E2D86;border:2px solid transparent;transition:transform .45s var(--ease),border-color .3s,box-shadow .45s}
@@ -433,7 +434,7 @@ body,.how,.foot,.explore,.cta{background:#000}
 .mini:hover{box-shadow:0 18px 40px rgba(0,0,0,.5)}
 .mini span,.mini.empty{color:var(--mute-d)}
 .cta{color:var(--paper)}
-.cta h2 span{color:var(--yellow)}
+.cta h2 .yl{color:var(--yellow)}
 .mail code{background:rgba(244,242,236,.08);cursor:pointer;transition:background .25s,color .25s}
 .mail code:hover{background:rgba(245,217,40,.14)}
 .mail code.copied{background:var(--yellow);color:var(--ink)}
@@ -693,7 +694,7 @@ body,.how,.foot,.explore,.cta{background:#000}
 <!-- 05 -->
 <section class="cta" id="contact" aria-labelledby="h-cta">
   <div class="wrap">
-    <h2 id="h-cta">Let's make room for <span>what's possible.</span></h2>
+    <h2 id="h-cta">Let's make room for <span class="yl">what's possible.</span></h2>
     <div class="intro">
       <p>A project you're ready to start. A brand that needs ongoing creative support. An idea you haven't quite figured out yet.</p>
       <p>Tell us what you're thinking. We'll take it from there.</p>
@@ -1199,10 +1200,11 @@ if (!fine && !RM) {
   addEventListener('touchmove', touchDots, { passive: true });
 }
 
-/* ================= hero headline: letters react to the pointer ================= */
-{
-  const h = $('#h-intro');
-  h.setAttribute('aria-label', $$('.ln', h).map(l => l.textContent.trim()).join(' '));
+/* ================= proximity hover on titles: letters near the pointer lift, lean and turn yellow; a click sends a wave ================= */
+function proximityLetters(h, intro) {
+  if (!h) return;
+  const lines = $$('.ln', h);
+  h.setAttribute('aria-label', lines.length ? lines.map(l => l.textContent.trim()).join(' ') : h.textContent.trim().replace(/\s+/g, ' '));
   let n = 0;
   const split = node => {
     [...node.childNodes].forEach(c => {
@@ -1221,15 +1223,16 @@ if (!fine && !RM) {
     });
   };
   split(h);
-  const chs = $$('.ch', h).map(el => ({ el, x: 0, y: 0, cur: 0, dot: el.classList.contains('pt') }));
-  let px = -9999, py = -9999, active = false, waves = [], running = false, measured = false;
-  const measure = () => { chs.forEach(c => { c.el.style.transform = ''; const r = c.el.getBoundingClientRect(); c.x = r.left + r.width / 2 + scrollX; c.y = r.top + r.height * .55 + scrollY; }); measured = true; };
-  setTimeout(() => { h.classList.add('live'); measure(); }, 1600 + n * 28);
+  h.classList.add('prox');
+  const chs = $$('.ch', h).map(el => ({ el, x: 0, y: 0, cur: 0, dot: el.classList.contains('pt'), base: '' }));
+  let px = -9999, py = -9999, active = false, waves = [], running = false, measured = false, live = !intro;
+  const measure = () => { chs.forEach(c => { c.el.style.transform = ''; c.el.style.color = ''; const r = c.el.getBoundingClientRect(); c.x = r.left + r.width / 2 + scrollX; c.y = r.top + r.height * .55 + scrollY; c.base = getComputedStyle(c.el).color; }); measured = true; };
+  if (intro) setTimeout(() => { h.classList.add('live'); live = true; measured = false; }, 1600 + n * 28);
   addEventListener('resize', () => { measured = false; });
-  const R = () => Math.max(110, h.getBoundingClientRect().height * .55);
+  addEventListener('scroll', () => { if (!running) measured = false; }, { passive: true });
   function tick(now) {
     if (!measured) measure();
-    const rad = R(), fs = parseFloat(getComputedStyle(h).fontSize);
+    const rad = Math.max(110, Math.min(260, h.getBoundingClientRect().height * .55)), fs = parseFloat(getComputedStyle(h).fontSize);
     let busy = false;
     waves = waves.filter(w => now - w.t < 1400);
     chs.forEach(c => {
@@ -1241,18 +1244,20 @@ if (!fine && !RM) {
       const v = c.cur < .002 ? 0 : c.cur;
       const lean = d > 1 ? clamp(dx / rad, -1, 1) : 0;
       c.el.style.transform = v ? `translateY(${(-v * .14 * fs).toFixed(2)}px) rotate(${(lean * v * 7).toFixed(2)}deg) scale(${(1 + v * .06).toFixed(3)})` : '';
-      if (!c.dot) c.el.style.color = v > .02 ? `color-mix(in srgb, var(--yellow) ${Math.round(v * 100)}%, var(--paper))` : '';
+      if (!c.dot) c.el.style.color = v > .02 ? `color-mix(in srgb, var(--yellow) ${Math.round(v * 100)}%, ${c.base})` : '';
     });
     if (busy || active || waves.length) requestAnimationFrame(tick); else running = false;
   }
-  const kick = () => { if (!running && !RM && h.classList.contains('live')) { running = true; requestAnimationFrame(tick); } };
-  const hero = h.closest('section') || h.parentElement;
-  hero.addEventListener('pointermove', e => { px = e.clientX + scrollX; py = e.clientY + scrollY; active = true; kick(); }, { passive: true });
-  hero.addEventListener('pointerleave', () => { active = false; kick(); });
-  hero.addEventListener('touchmove', e => { const t = e.touches[0]; if (!t) return; px = t.clientX + scrollX; py = t.clientY + scrollY; active = true; kick(); }, { passive: true });
-  hero.addEventListener('touchend', () => { active = false; kick(); }, { passive: true });
+  const kick = () => { if (!running && !RM && live) { running = true; requestAnimationFrame(tick); } };
+  const zone = h.closest('section') || h.parentElement;
+  zone.addEventListener('pointermove', e => { px = e.clientX + scrollX; py = e.clientY + scrollY; active = true; kick(); }, { passive: true });
+  zone.addEventListener('pointerleave', () => { active = false; kick(); });
+  zone.addEventListener('touchmove', e => { const t = e.touches[0]; if (!t) return; px = t.clientX + scrollX; py = t.clientY + scrollY; active = true; kick(); }, { passive: true });
+  zone.addEventListener('touchend', () => { active = false; kick(); }, { passive: true });
   h.addEventListener('pointerdown', e => { waves.push({ x: e.clientX + scrollX, y: e.clientY + scrollY, t: performance.now() }); kick(); });
 }
+proximityLetters($('#h-intro'), true);
+['#h-work', '#h-explore', '#h-caps', '#h-how', '#h-cta'].forEach(sel => proximityLetters($(sel), false));
 
 /* ================= main loop ================= */
 let last = performance.now(), heroT = 0;
