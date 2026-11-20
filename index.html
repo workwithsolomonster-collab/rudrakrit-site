@@ -96,6 +96,13 @@ main > section > *, .foot > *{position:relative}
 .hero h1{font-weight:800;font-size:clamp(40px,7.9vw,134px);line-height:.98;letter-spacing:-.045em;margin:0 0 var(--g1);color:var(--paper)}
 .hero h1 .ln{display:block;white-space:nowrap}
 .hero h1 .pt{color:var(--yellow)}
+/* interactive headline: letters drop in, lift and warm toward the pointer, and a click sends a wave through them */
+.hero h1 .w{display:inline-block;white-space:nowrap}
+.hero h1 .ch{display:inline-block;transform-origin:50% 100%;will-change:transform;animation:chIn .9s var(--ease) both;animation-delay:calc(var(--i) * 28ms + .15s)}
+@keyframes chIn{from{opacity:0;transform:translateY(.45em) rotate(6deg)}to{opacity:1;transform:none}}
+.hero h1.live .ch{animation:none}
+#h-intro{touch-action:pan-y;cursor:default}
+@media (prefers-reduced-motion:reduce){.hero h1 .ch{animation:none}}
 .hero h1 .hl{font-style:normal;color:var(--yellow)}
 .inl{display:inline-block;position:relative;width:1.55em;height:.74em;border-radius:.1em;overflow:hidden;vertical-align:.02em;margin:0 .06em;background:var(--ink-2);transform:rotate(-2deg);transition:transform .5s var(--ease),width .6s var(--ease)}
 .inl.b{transform:rotate(2deg);width:1.2em}
@@ -575,11 +582,11 @@ body,.how,.foot,.explore,.cta{background:#000}
   </div>
   <div class="reel intro-anim d4" id="reel" data-cursor="pause" tabindex="0" role="button" aria-label="Showreel. Press to pause or play">
     <div class="reel-ui">
-      <div class="reel-top"><span class="rec" id="reel-state">Showreel · Playing</span><span class="hide-s">16:9 · 24 fps · 4K</span></div>
+      <span id="reel-state" hidden></span>
       <div class="reel-bot">
         <div class="reel-title" id="reel-title" hidden><small id="reel-cat">Film &amp; stories</small><b id="reel-name">Monsoon Letters</b></div>
         <div class="scrub" id="scrub"></div>
-        <div class="reel-meta"><span id="reel-tc">00:00:00:00</span><span class="hide-s" id="reel-n">00:00 / 01:08</span><span>Rudrakrit — Reel 2026</span></div>
+        <div class="reel-meta" hidden style="display:none"><span id="reel-tc">00:00:00:00</span><span class="hide-s" id="reel-n">00:00 / 01:08</span><span>Rudrakrit — Reel 2026</span></div>
       </div>
     </div>
   </div>
@@ -1190,6 +1197,61 @@ if (!fine && !RM) {
   const touchDots = e => { const t = e.touches && e.touches[0]; if (!t) return; const el = document.elementFromPoint(t.clientX, t.clientY); const sec = el && el.closest && el.closest('main > section, .foot'); if (sec && dotsCv.parentElement !== sec) sec.prepend(dotsCv); const x = t.clientX, y = t.clientY + scrollY; if (e.type === 'touchstart') { lastPX = x; lastPY = y; trail.push({ x, y, life: 1 }); return; } const d = Math.hypot(x - lastPX, y - lastPY); if (d < 6) return; const n = Math.min(10, Math.ceil(d / 8)); for (let k = 1; k <= n; k++) trail.push({ x: lastPX + (x - lastPX) * k / n, y: lastPY + (y - lastPY) * k / n, life: 1 }); lastPX = x; lastPY = y; while (trail.length > 64) trail.shift(); };
   addEventListener('touchstart', touchDots, { passive: true });
   addEventListener('touchmove', touchDots, { passive: true });
+}
+
+/* ================= hero headline: letters react to the pointer ================= */
+{
+  const h = $('#h-intro');
+  h.setAttribute('aria-label', $$('.ln', h).map(l => l.textContent.trim()).join(' '));
+  let n = 0;
+  const split = node => {
+    [...node.childNodes].forEach(c => {
+      if (c.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        c.textContent.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(' ')); return; }
+          const w = document.createElement('span'); w.className = 'w'; w.setAttribute('aria-hidden', 'true');
+          [...part].forEach(ch => { const sp = document.createElement('span'); sp.className = 'ch'; sp.textContent = ch; sp.style.setProperty('--i', n++); w.appendChild(sp); });
+          frag.appendChild(w);
+        });
+        c.replaceWith(frag);
+      } else if (c.classList && c.classList.contains('pt')) { c.classList.add('ch'); c.setAttribute('aria-hidden', 'true'); c.style.setProperty('--i', n++); }
+      else if (c.nodeType === 1) split(c);
+    });
+  };
+  split(h);
+  const chs = $$('.ch', h).map(el => ({ el, x: 0, y: 0, cur: 0, dot: el.classList.contains('pt') }));
+  let px = -9999, py = -9999, active = false, waves = [], running = false, measured = false;
+  const measure = () => { chs.forEach(c => { c.el.style.transform = ''; const r = c.el.getBoundingClientRect(); c.x = r.left + r.width / 2 + scrollX; c.y = r.top + r.height * .55 + scrollY; }); measured = true; };
+  setTimeout(() => { h.classList.add('live'); measure(); }, 1600 + n * 28);
+  addEventListener('resize', () => { measured = false; });
+  const R = () => Math.max(110, h.getBoundingClientRect().height * .55);
+  function tick(now) {
+    if (!measured) measure();
+    const rad = R(), fs = parseFloat(getComputedStyle(h).fontSize);
+    let busy = false;
+    waves = waves.filter(w => now - w.t < 1400);
+    chs.forEach(c => {
+      const dx = c.x - px, dy = c.y - py, d = Math.hypot(dx, dy);
+      let t = active ? Math.pow(Math.max(0, 1 - d / rad), 2) : 0;
+      waves.forEach(w => { const age = (now - w.t) / 1000, ring = age * 1500, dd = Math.hypot(c.x - w.x, c.y - w.y), k = Math.max(0, 1 - Math.abs(dd - ring) / 120) * Math.max(0, 1 - age / 1.4); t = Math.max(t, k); });
+      c.cur += (t - c.cur) * .18;
+      if (Math.abs(t - c.cur) > .002 || c.cur > .002) busy = true;
+      const v = c.cur < .002 ? 0 : c.cur;
+      const lean = d > 1 ? clamp(dx / rad, -1, 1) : 0;
+      c.el.style.transform = v ? `translateY(${(-v * .14 * fs).toFixed(2)}px) rotate(${(lean * v * 7).toFixed(2)}deg) scale(${(1 + v * .06).toFixed(3)})` : '';
+      if (!c.dot) c.el.style.color = v > .02 ? `color-mix(in srgb, var(--yellow) ${Math.round(v * 100)}%, var(--paper))` : '';
+    });
+    if (busy || active || waves.length) requestAnimationFrame(tick); else running = false;
+  }
+  const kick = () => { if (!running && !RM && h.classList.contains('live')) { running = true; requestAnimationFrame(tick); } };
+  const hero = h.closest('section') || h.parentElement;
+  hero.addEventListener('pointermove', e => { px = e.clientX + scrollX; py = e.clientY + scrollY; active = true; kick(); }, { passive: true });
+  hero.addEventListener('pointerleave', () => { active = false; kick(); });
+  hero.addEventListener('touchmove', e => { const t = e.touches[0]; if (!t) return; px = t.clientX + scrollX; py = t.clientY + scrollY; active = true; kick(); }, { passive: true });
+  hero.addEventListener('touchend', () => { active = false; kick(); }, { passive: true });
+  h.addEventListener('pointerdown', e => { waves.push({ x: e.clientX + scrollX, y: e.clientY + scrollY, t: performance.now() }); kick(); });
 }
 
 /* ================= main loop ================= */
