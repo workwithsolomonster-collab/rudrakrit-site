@@ -1187,7 +1187,7 @@ if (fine) {
 
 /* touch screens: a finger (tap or scroll) leaves the same dot trail as the mouse */
 if (!fine && !RM) {
-  const touchDots = e => { const t = e.touches && e.touches[0]; if (!t) return; const el = document.elementFromPoint(t.clientX, t.clientY); const sec = el && el.closest && el.closest('main > section, .foot'); if (sec && dotsCv.parentElement !== sec) sec.prepend(dotsCv); const x = t.clientX, y = t.clientY + scrollY; if (Math.hypot(x - lastPX, y - lastPY) < 9) return; lastPX = x; lastPY = y; trail.push({ x, y, life: 1 }); if (trail.length > 48) trail.shift(); };
+  const touchDots = e => { const t = e.touches && e.touches[0]; if (!t) return; const el = document.elementFromPoint(t.clientX, t.clientY); const sec = el && el.closest && el.closest('main > section, .foot'); if (sec && dotsCv.parentElement !== sec) sec.prepend(dotsCv); const x = t.clientX, y = t.clientY + scrollY; if (e.type === 'touchstart') { lastPX = x; lastPY = y; trail.push({ x, y, life: 1 }); return; } const d = Math.hypot(x - lastPX, y - lastPY); if (d < 6) return; const n = Math.min(10, Math.ceil(d / 8)); for (let k = 1; k <= n; k++) trail.push({ x: lastPX + (x - lastPX) * k / n, y: lastPY + (y - lastPY) * k / n, life: 1 }); lastPX = x; lastPY = y; while (trail.length > 64) trail.shift(); };
   addEventListener('touchstart', touchDots, { passive: true });
   addEventListener('touchmove', touchDots, { passive: true });
 }
@@ -1241,7 +1241,8 @@ let mwOn = null;
 function mwStop(m) { if (!m) return; m.classList.remove('on'); $('video', m).pause(); m.dataset.cursor = 'play'; if (mwOn === m) mwOn = null; }
 function mwPlay(m) { if (RM) return; if (mwOn && mwOn !== m) mwStop(mwOn); mwOn = m; m.classList.add('on'); $('video', m).play().catch(() => {}); m.dataset.cursor = 'pause'; }
 mws.forEach(m => {
-  m.addEventListener('click', () => { m.classList.contains('on') ? mwStop(m) : mwPlay(m); cursorRefresh(); });
+  m.addEventListener('touchstart', () => { if (!m.classList.contains('on')) { mwPlay(m); m._tt = performance.now(); } }, { passive: true });
+  m.addEventListener('click', () => { if (m._tt && performance.now() - m._tt < 700) return; m.classList.contains('on') ? mwStop(m) : mwPlay(m); cursorRefresh(); });
 });
 
 /* boot */
