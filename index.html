@@ -592,16 +592,15 @@ body,.how,.foot,.explore,.cta{background:#000}
   <div class="wrap">
     <h2 class="h2" id="h-explore">Whatever you're building, we can create alongside you.</h2>
     <div class="aud">
-      <div class="aud-list" role="tablist" aria-label="Who we work with">
-        <button class="aud-btn" role="tab" data-mode="brands" aria-selected="true" data-desc="For brands that need creative work to keep their communication moving, from product videos and campaigns to everyday content.">Brands &amp; Businesses</button>
-        <button class="aud-btn" role="tab" data-mode="startups" aria-selected="false" data-desc="For teams building something new and looking for creative support that can grow with them.">Startups &amp; Growing Teams</button>
-        <button class="aud-btn" role="tab" data-mode="creators" aria-selected="false" data-desc="For creators who need a consistent production partner to develop, produce and deliver content.">Creators &amp; Media</button>
-        <button class="aud-btn" role="tab" data-mode="agencies" aria-selected="false" data-desc="For teams that need additional creative and production capabilities without expanding their in-house setup.">Agencies &amp; Marketing Teams</button>
-        <button class="aud-btn" role="tab" data-mode="entertainment" aria-selected="false" data-desc="For projects that call for specialised visual execution, 3D, VFX, motion and production.">Entertainment &amp; Gaming</button>
+      <div class="aud-list" role="tablist" aria-label="What we make">
+        <button class="aud-btn" role="tab" data-mode="editing" aria-selected="true">Video editing</button>
+        <button class="aud-btn" role="tab" data-mode="motion" aria-selected="false">Motion graphics</button>
+        <button class="aud-btn" role="tab" data-mode="3d" aria-selected="false">3D animation</button>
+        <button class="aud-btn" role="tab" data-mode="vfx" aria-selected="false">VFX</button>
+        <button class="aud-btn" role="tab" data-mode="films" aria-selected="false">Brand films</button>
       </div>
       <div class="aud-view">
-        <div class="stage" id="stage" role="tabpanel" aria-label="Preview"><video class="sv" data-mode="brands" src="media/prime.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="startups" src="media/keyring-saas.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="creators" src="media/cristian.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="agencies" src="media/level4.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="entertainment" src="media/keyring-film.mp4" muted loop playsinline preload="auto"></video></div>
-        <p class="aud-desc" id="aud-desc" aria-live="polite"></p>
+        <div class="stage" id="stage" role="tabpanel" aria-label="Preview"><video class="sv" data-mode="editing" src="media/prime.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="motion" src="media/level4.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="3d" src="media/mw-dravion.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="vfx" src="media/mw-bridge.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="films" src="media/keyring-film.mp4" muted loop playsinline preload="auto"></video></div>
       </div>
     </div>
   </div>
@@ -1076,7 +1075,7 @@ const stg = $('#stage');
 let mode = '';
 function setMode(m) {
   if (m === mode) return; mode = m;
-  $$('.aud-btn').forEach(b => { const on = b.dataset.mode === m; b.setAttribute('aria-selected', on); if (on) $('#aud-desc').textContent = b.dataset.desc; });
+  $$('.aud-btn').forEach(b => { const on = b.dataset.mode === m; b.setAttribute('aria-selected', on); });
   $$('.sv', stg).forEach(v => { const on = v.dataset.mode === m; v.classList.toggle('on', on); if (on && !RM) { v.currentTime = 0; v.play().catch(() => {}); } else v.pause(); });
 }
 let hoverT;
@@ -1219,7 +1218,7 @@ mws.forEach(m => {
 });
 
 /* boot */
-setMode('brands');
+setMode('editing');
 clips.forEach(c => { sizeClip(c); io.observe(c.cv); });
 sizeReel(); sizeDots(); drawReel();
 layoutCF(true);
