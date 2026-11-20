@@ -633,14 +633,14 @@ body,.how,.foot,.explore,.cta{background:#000}
 <section class="band" id="more" aria-label="More work">
   <div class="wrap">
     <div class="mw-grid">
-      <figure class="mw v" data-cursor="play"><video src="media/mw-shelby.mp4" muted loop playsinline preload="none"></video></figure><!-- Shelby Set · PUBG Mobile · 3D -->
-      <figure class="mw v" data-cursor="play"><video src="media/mw-dravion.mp4" muted loop playsinline preload="none"></video></figure><!-- Dravion X Suit · PUBG Mobile · 3D -->
-      <figure class="mw h" data-cursor="play"><video src="media/mw-jadefang.mp4" muted loop playsinline preload="none"></video></figure><!-- Jadefang Aurora · PUBG Mobile · 3D -->
-      <figure class="mw h" data-cursor="play"><video src="media/mw-bridge.mp4" muted loop playsinline preload="none"></video></figure><!-- Bridge · Aankhon Ki Gustaakhiyan · VFX -->
-      <figure class="mw h" data-cursor="play"><video src="media/mw-train.mp4" muted loop playsinline preload="none"></video></figure><!-- Train · Aankhon Ki Gustaakhiyan · VFX -->
-      <figure class="mw v" data-cursor="play"><video src="media/mw-m416.mp4" muted loop playsinline preload="none"></video></figure><!-- M416 Fool Set · PUBG Mobile · 3D -->
-      <figure class="mw v" data-cursor="play"><video src="media/mw-property.mp4" muted loop playsinline preload="none"></video></figure><!-- Property Edit · Real estate · Edit -->
-      <figure class="mw h" data-cursor="play"><video src="media/mw-showdown.mp4" muted loop playsinline preload="none"></video></figure><!-- ShowDown Launch · Product video · Motion -->
+      <figure class="mw v" data-cursor="play"><video src="media/mw-shelby.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- Shelby Set · PUBG Mobile · 3D -->
+      <figure class="mw v" data-cursor="play"><video src="media/mw-dravion.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- Dravion X Suit · PUBG Mobile · 3D -->
+      <figure class="mw h" data-cursor="play"><video src="media/mw-jadefang.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- Jadefang Aurora · PUBG Mobile · 3D -->
+      <figure class="mw h" data-cursor="play"><video src="media/mw-bridge.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- Bridge · Aankhon Ki Gustaakhiyan · VFX -->
+      <figure class="mw h" data-cursor="play"><video src="media/mw-train.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- Train · Aankhon Ki Gustaakhiyan · VFX -->
+      <figure class="mw v" data-cursor="play"><video src="media/mw-m416.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- M416 Fool Set · PUBG Mobile · 3D -->
+      <figure class="mw v" data-cursor="play"><video src="media/mw-property.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- Property Edit · Real estate · Edit -->
+      <figure class="mw h" data-cursor="play"><video src="media/mw-showdown.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- ShowDown Launch · Product video · Motion -->
     </div>
   </div>
 </section>
@@ -1189,11 +1189,16 @@ $('#intro').prepend(dotsCv);
 const navEl = $('.nav');
 function navTone() { navEl.style.visibility = 'hidden'; const el = document.elementFromPoint(innerWidth / 2, 34); navEl.style.visibility = ''; navEl.classList.toggle('light', false); }
 addEventListener('scroll', navTone, { passive: true });
-/* more work: every clip plays while it is on screen; a click pauses or resumes it */
+/* more work: one clip at a time; hover plays it on desktop, a click or tap plays or pauses it */
 const mws = $$('.mw');
-mws.forEach(m => { const v = $('video', m); m.addEventListener('click', () => { m.dataset.held = m.dataset.held ? '' : '1'; if (m.dataset.held) { v.pause(); m.classList.remove('on'); m.dataset.cursor = 'play'; } else { v.play().catch(() => {}); m.classList.add('on'); m.dataset.cursor = 'pause'; } cursorRefresh(); }); });
-const mio = new IntersectionObserver(es => es.forEach(e => { const m = e.target, v = $('video', m); if (e.isIntersecting && !RM && !m.dataset.held) { m.classList.add('on'); m.dataset.cursor = 'pause'; v.play().catch(() => {}); } else if (!e.isIntersecting) { m.classList.remove('on'); v.pause(); } }), { threshold: .25 });
-mws.forEach(m => mio.observe(m));
+const hoverable = matchMedia('(hover: hover)').matches;
+let mwOn = null;
+function mwStop(m) { if (!m) return; m.classList.remove('on'); $('video', m).pause(); m.dataset.cursor = 'play'; if (mwOn === m) mwOn = null; }
+function mwPlay(m) { if (RM) return; if (mwOn && mwOn !== m) mwStop(mwOn); mwOn = m; m.classList.add('on'); $('video', m).play().catch(() => {}); m.dataset.cursor = 'pause'; }
+mws.forEach(m => {
+  if (hoverable) { m.addEventListener('pointerenter', () => { mwPlay(m); cursorRefresh(); }); m.addEventListener('pointerleave', () => { mwStop(m); cursorRefresh(); }); }
+  m.addEventListener('click', () => { m.classList.contains('on') ? mwStop(m) : mwPlay(m); cursorRefresh(); });
+});
 
 /* boot */
 setMode('brands');
