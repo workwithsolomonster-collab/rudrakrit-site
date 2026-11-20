@@ -536,7 +536,7 @@ body,.how,.foot,.explore,.cta{background:#000}
       <div class="reel-bot">
         <div class="reel-title" id="reel-title" hidden><small id="reel-cat">Film &amp; stories</small><b id="reel-name">Monsoon Letters</b></div>
         <div class="scrub" id="scrub"></div>
-        <div class="reel-meta"><span id="reel-tc">00:00:00:00</span><span class="hide-s" id="reel-n">01 / 06</span><span>Rudrakrit — Reel 2026</span></div>
+        <div class="reel-meta"><span id="reel-tc">00:00:00:00</span><span class="hide-s" id="reel-n">00:00 / 01:08</span><span>Rudrakrit — Reel 2026</span></div>
       </div>
     </div>
   </div>
@@ -945,7 +945,8 @@ function sizeReel() {}
 let reelT = 0, reelPlaying = !RM, reelShot = -1, reelVisible = true;
 new IntersectionObserver(es => es.forEach(e => reelVisible = e.isIntersecting)).observe(reel);
 const scrub = $('#scrub');
-REEL.forEach((p, i) => { const b = document.createElement('button'); b.setAttribute('aria-label', `Jump to ${p.title}`); b.innerHTML = '<i></i>'; b.addEventListener('click', e => { e.stopPropagation(); rv.currentTime = i * SHOT + .05; drawReel(); }); scrub.appendChild(b); });
+{ const b = document.createElement('button'); b.setAttribute('aria-label', 'Seek in showreel'); b.innerHTML = '<i></i>'; b.addEventListener('click', e => { e.stopPropagation(); const r = b.getBoundingClientRect(); if (rv.duration) rv.currentTime = clamp((e.clientX - r.left) / r.width, 0, 1) * rv.duration; drawReel(); }); scrub.appendChild(b); }
+const mmss = s => `${pad2(Math.floor(s / 60))}:${pad2(Math.floor(s % 60))}`;
 const segs = $$('i', scrub);
 function toggleReel() { reelPlaying = !reelPlaying; reelPlaying ? rv.play().catch(() => {}) : rv.pause(); reel.classList.toggle('paused', !reelPlaying); reel.dataset.cursor = reelPlaying ? 'pause' : 'play'; $('#reel-state').textContent = `Showreel · ${reelPlaying ? 'Playing' : 'Paused'}`; cursorRefresh(); }
 if (RM) { reel.classList.add('paused'); reel.dataset.cursor = 'play'; $('#reel-state').textContent = 'Showreel · Paused'; }
@@ -959,9 +960,10 @@ function drawReel() {
   if (i !== reelShot) {
     reelShot = i; $('#reel-name').textContent = p.title; $('#reel-cat').textContent = `${CAT[p.cat][0]} · ${p.client}`;
     const t = $('#reel-title'); t.classList.remove('swap'); void t.offsetWidth; t.classList.add('swap');
-    $('#reel-n').textContent = `${pad2(i + 1)} / ${pad2(REEL.length)}`;
   }
-  segs.forEach((sg, k) => sg.style.setProperty('--f', k < i ? 1 : k > i ? 0 : (local / SHOT).toFixed(3)));
+  const dur = rv.duration || total;
+  $('#reel-n').textContent = `${mmss(reelT)} / ${mmss(dur)}`;
+  segs[0].style.setProperty('--f', (reelT / dur).toFixed(4));
   const f = Math.floor(tt * 24); $('#reel-tc').textContent = `00:00:${pad2(Math.floor(f / 24))}:${pad2(f % 24)}`;
 }
 $$('.inl').forEach((el, k) => { const p = k ? P[0] : P[5]; const c = makeCanvas(el, el.dataset.scene, p.pal, { t0: 3 + k * 4 }); c.always = .7; });
