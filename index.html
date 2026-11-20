@@ -466,21 +466,32 @@ body,.how,.foot,.explore,.cta{background:#000}
 .aud-btn[aria-selected="true"]{color:var(--paper);transform:translateX(10px)}
 .aud-desc{margin:16px 0 0;font-size:clamp(16px,1.4vw,19px);line-height:1.45;max-width:46ch;color:var(--paper)}
 @media (max-width:860px){.aud{grid-template-columns:1fr}.aud-btn[aria-selected="true"]{transform:none}}
-/* Who we work with: clip on the left, who we've made it for on the right */
-.aud-view{display:grid;grid-template-columns:minmax(200px,300px) minmax(0,1fr);gap:20px 36px;align-items:end}
-.aud-view .stage{grid-column:1;grid-row:1;aspect-ratio:9/16;width:100%;border-radius:10px}
+/* Who we work with: audience pills on top, one panel below with the clip, who it is for and who we've made work for */
+#explore .aud{display:block;margin-top:var(--g1)}
+#explore .aud-list{flex-direction:row;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+#explore .aud-btn{font-size:clamp(14px,1.1vw,16px);font-weight:600;letter-spacing:-.01em;padding:10px 16px;border-radius:999px;border:1px solid var(--line-d);color:var(--mute-d);box-shadow:none;transform:none;transition:color .3s,background .3s,border-color .3s}
+#explore .aud-btn:hover{color:var(--paper);border-color:rgba(244,242,236,.35)}
+#explore .aud-btn[aria-selected="true"]{background:var(--paper);border-color:var(--paper);color:#000;padding-left:16px}
+.aud-view{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,340px);gap:0;background:#0b0b0b;border:1px solid var(--line-d);border-radius:14px;overflow:hidden}
+.aud-info{grid-column:1;grid-row:1;display:flex;flex-direction:column;gap:22px;padding:clamp(22px,3vw,40px)}
+.aud-top{display:flex;flex-direction:column;gap:10px}
+.aud-k{font-family:var(--f-mono);font-size:12px;color:var(--yellow)}
+.aud-name{margin:0;font-family:var(--f-display);font-size:clamp(30px,3.6vw,54px);font-weight:800;letter-spacing:-.05em;line-height:1}
+.aud-info .aud-desc{margin:0;max-width:44ch;color:var(--mute-d)}
+.aud-who{margin-top:auto}
+.aud-view .stage{grid-column:2;grid-row:1;aspect-ratio:9/16;width:100%;border-radius:0}
 .aud-view .sv{object-fit:cover}
-.aud-info{grid-column:2;grid-row:1;display:flex;flex-direction:column;gap:28px;padding-bottom:4px}
-.aud-info .aud-desc{margin:0}
-.aud-who small{display:block;font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--yellow);margin-bottom:10px}
+.aud-who small{display:block;font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute-d);margin-bottom:10px}
 .aud-who ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--line-d)}
 .aud-who li{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-bottom:1px solid var(--line-d);opacity:0;transform:translateY(8px);animation:whoIn .5s var(--ease) forwards}
+.aud-who li:last-child{border-bottom:0}
 .aud-who b{font-size:clamp(16px,1.4vw,20px);font-weight:700;letter-spacing:-.02em}
 .aud-who span{font-size:13px;color:var(--mute-d);text-align:right}
 .aud-who span em{font-style:normal;color:var(--paper)}
-@keyframes whoIn{to{opacity:1;transform:none}}
-@media (max-width:860px){.aud-view{grid-template-columns:minmax(0,1fr)}.aud-view .stage{max-width:300px}.aud-info{grid-column:1;grid-row:auto}}
-@media (prefers-reduced-motion:reduce){.aud-who li{animation:none;opacity:1;transform:none}}
+.aud-name,.aud-k{animation:whoIn .5s var(--ease) both}
+@keyframes whoIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (max-width:760px){#explore .aud-list{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px}#explore .aud-btn{flex:none}.aud-view{grid-template-columns:1fr}.aud-view .stage{grid-column:1;grid-row:1;aspect-ratio:4/5}.aud-info{grid-row:2}}
+@media (prefers-reduced-motion:reduce){.aud-who li,.aud-name,.aud-k{animation:none;opacity:1;transform:none}}
 .caps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px;margin-top:var(--g1)}
 .cap h3,.pt-item h3,.step h3{margin:0 0 12px;font-size:clamp(19px,1.6vw,23px);font-weight:700;letter-spacing:-.025em;line-height:1.15}
 .cap ul{list-style:none;margin:0;padding:0;display:grid;gap:7px;color:var(--mute-d);font-size:16px}
@@ -512,15 +523,19 @@ body,.how,.foot,.explore,.cta{background:#000}
 .proof-stats span{color:#8C8BE6}
 
 /* Capabilities: dark cards with service chips */
-#capabilities .caps{gap:12px}
-#capabilities .cap{background:rgba(244,242,236,.025);border-radius:12px;padding:22px 20px 24px;transition:background .35s}
-#capabilities .cap:hover{background:rgba(244,242,236,.045)}
-#capabilities .cap h3{margin-bottom:16px}
-#capabilities .cap ul{display:flex;flex-wrap:wrap;gap:6px}
-#capabilities .cap li{font-size:13px;line-height:1.2;padding:6px 11px;border-radius:999px;background:rgba(244,242,236,.05);color:var(--mute-d);transition:color .3s}
-#capabilities .cap:hover li{color:var(--paper)}
+#capabilities .caps{display:block;margin-top:var(--g1);border-top:1px solid var(--line-d)}
+#capabilities .cap{display:grid;grid-template-columns:56px minmax(0,1fr) minmax(0,1.1fr);align-items:baseline;gap:8px 24px;padding:clamp(18px,2vw,28px) 0;border-bottom:1px solid var(--line-d);counter-increment:cap}
+#capabilities .caps{counter-reset:cap}
+#capabilities .cap::before{content:counter(cap,decimal-leading-zero);font-family:var(--f-mono);font-size:12px;color:var(--mute-d);transition:color .35s}
+#capabilities .cap h3{margin:0;font-family:var(--f-display);font-size:clamp(28px,3.6vw,56px);font-weight:800;letter-spacing:-.05em;line-height:1;color:rgba(244,242,236,.88);transition:color .35s var(--ease),transform .5s var(--ease)}
+#capabilities .cap h3::before{display:none}
+#capabilities .cap ul{display:flex;flex-wrap:wrap;gap:4px 0;font-size:clamp(14px,1.15vw,17px);color:var(--mute-d);transition:color .35s}
+#capabilities .cap li:not(:last-child)::after{content:"·";margin:0 10px;color:rgba(244,242,236,.25)}
+#capabilities .caps:hover .cap h3{color:rgba(244,242,236,.3)}
+#capabilities .caps .cap:hover h3{color:var(--yellow);transform:translateX(10px)}
+#capabilities .cap:hover::before,#capabilities .cap:hover ul{color:var(--paper)}
 #capabilities .close{font-size:clamp(15px,1.2vw,17px);color:var(--mute-d);margin-top:24px}
-@media (max-width:600px){#capabilities .caps{grid-template-columns:1fr}}
+@media (max-width:760px){#capabilities .cap{grid-template-columns:36px minmax(0,1fr)}#capabilities .cap ul{grid-column:2}}
 
 /* About: compact two-column layout, heading and line left, stats right */
 #about{padding-block:calc(var(--sec) * .6)}
@@ -626,6 +641,7 @@ body,.how,.foot,.explore,.cta{background:#000}
       <div class="aud-view">
         <div class="stage" id="stage" role="tabpanel" aria-label="Preview"><video class="sv" data-mode="brands" src="media/prime.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="startups" src="media/keyring-saas.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="creators" src="media/cristian.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="agencies" src="media/level4.mp4" muted loop playsinline preload="auto"></video><video class="sv" data-mode="entertainment" src="media/mw-shelby.mp4" muted loop playsinline preload="auto"></video></div>
         <div class="aud-info">
+          <div class="aud-top"><span class="aud-k" id="aud-k">01 / 05</span><h3 class="aud-name" id="aud-name"></h3></div>
           <p class="aud-desc" id="aud-desc" aria-live="polite"></p>
           <div class="aud-who" id="aud-who"></div>
         </div>
@@ -1106,7 +1122,7 @@ const WHO = {
 let mode = '';
 function setMode(m) {
   if (m === mode) return; mode = m;
-  $$('.aud-btn').forEach(b => { const on = b.dataset.mode === m; b.setAttribute('aria-selected', on); if (on) $('#aud-desc').textContent = b.dataset.desc; });
+  $$('.aud-btn').forEach(b => { const on = b.dataset.mode === m; b.setAttribute('aria-selected', on); if (on) { $('#aud-desc').textContent = b.dataset.desc; const n = $('#aud-name'), k = $('#aud-k'); n.textContent = b.textContent; k.textContent = `0${AUDS.indexOf(m) + 1} / 0${AUDS.length}`; [n, k].forEach(x => { x.style.animation = 'none'; x.offsetWidth; x.style.animation = ''; }); } });
   $$('.sv', stg).forEach(v => { const on = v.dataset.mode === m; v.classList.toggle('on', on); if (on && !RM) { v.currentTime = 0; v.play().catch(() => {}); } else v.pause(); });
   const [h, rows] = WHO[m];
   $('#aud-who').innerHTML = `<small>${h}</small><ul>${rows.map((r, k) => `<li style="animation-delay:${k * 60}ms"><b>${r[0]}</b><span>${r[1]}</span></li>`).join('')}</ul>`;
