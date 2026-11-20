@@ -147,7 +147,7 @@ main > section > *, .foot > *{position:relative}
 .scrub button:hover i{height:6px}
 .scrub button i::after{content:"";position:absolute;inset:0;background:var(--yellow);transform:scaleX(var(--f,0));transform-origin:left}
 .reel-meta{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;font-variant-numeric:tabular-nums}
-@media (max-width:600px){.reel{aspect-ratio:4/5}.reel-meta .hide-s{display:none}}
+@media (max-width:600px){.reel{aspect-ratio:16/9}.reel-meta{display:none!important}.reel-ui{padding:12px}.hero{padding-bottom:40px}.work{padding-top:48px}}
 
 .intro-anim{animation:rise 1s var(--ease) both}
 .intro-anim.d2{animation-delay:.1s}.intro-anim.d3{animation-delay:.2s}.intro-anim.d4{animation-delay:.3s}
