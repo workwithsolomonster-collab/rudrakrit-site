@@ -490,10 +490,25 @@ body,.how,.foot,.explore,.cta{background:#000}
 ::selection{background:var(--indigo);color:#fff}
 .step small{color:#8C8BE6}
 .step small::before{content:"";display:block;width:28px;height:2px;background:var(--indigo);margin-bottom:12px}
-.cap h3::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--indigo);margin-right:10px;vertical-align:.12em}
+.cap h3::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--yellow);margin-right:10px;vertical-align:.12em}
 .aud-btn[aria-selected="true"]{box-shadow:inset 3px 0 0 var(--indigo);padding-left:14px}
 .btn-g:hover{background:#fff;border-color:#fff;color:var(--ink)}
 .proof-stats span{color:#8C8BE6}
+
+/* More work: mosaic of real edits (vertical tiles 1 col x 2 rows, wide tiles 2 cols x 1 row) */
+.mw-grid{--cols:4;--gap:12px;container-type:inline-size;display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));grid-auto-rows:calc((100cqw - (var(--cols) - 1) * var(--gap)) / var(--cols) * .89);grid-auto-flow:dense;gap:var(--gap)}
+.mw{position:relative;overflow:hidden;border-radius:6px;background:#111;margin:0;transition:opacity .4s var(--ease)}
+.mw.v{grid-row:span 2}
+.mw.h{grid-column:span 2}
+.mw video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.02);transition:transform .8s var(--ease)}
+.mw:hover video,.mw.on video{transform:scale(1.06)}
+.mw-grid:hover .mw:not(:hover){opacity:.45}
+.mw-cap{position:absolute;left:0;right:0;bottom:0;padding:14px;display:flex;flex-direction:column;gap:2px;background:linear-gradient(transparent,rgba(0,0,0,.72));pointer-events:none}
+.mw-cap b{font-size:clamp(15px,1.3vw,18px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.mw-cap small{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute-d)}
+.mw-cap small::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--yellow);margin-right:7px;vertical-align:.08em}
+.mw.on .mw-cap small::before{animation:blink 1.2s steps(2) infinite}
+@media (max-width:700px){.mw-grid{--cols:2;--gap:8px}.mw-cap{padding:10px}}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
@@ -611,6 +626,22 @@ body,.how,.foot,.explore,.cta{background:#000}
       <li class="step"><small>04</small><h3>Deliver</h3><p>Review, refine and final delivery.</p></li>
     </ol>
     <p class="close">And when the next brief comes in, we're already in your corner.</p>
+  </div>
+</section>
+
+<!-- more work -->
+<section class="band" id="more" aria-label="More work">
+  <div class="wrap">
+    <div class="mw-grid">
+      <figure class="mw v" data-cursor="play"><video src="media/mw-shelby.mp4" muted loop playsinline preload="none"></video></figure><!-- Shelby Set · PUBG Mobile · 3D -->
+      <figure class="mw v" data-cursor="play"><video src="media/mw-dravion.mp4" muted loop playsinline preload="none"></video></figure><!-- Dravion X Suit · PUBG Mobile · 3D -->
+      <figure class="mw h" data-cursor="play"><video src="media/mw-jadefang.mp4" muted loop playsinline preload="none"></video></figure><!-- Jadefang Aurora · PUBG Mobile · 3D -->
+      <figure class="mw h" data-cursor="play"><video src="media/mw-bridge.mp4" muted loop playsinline preload="none"></video></figure><!-- Bridge · Aankhon Ki Gustaakhiyan · VFX -->
+      <figure class="mw h" data-cursor="play"><video src="media/mw-train.mp4" muted loop playsinline preload="none"></video></figure><!-- Train · Aankhon Ki Gustaakhiyan · VFX -->
+      <figure class="mw v" data-cursor="play"><video src="media/mw-m416.mp4" muted loop playsinline preload="none"></video></figure><!-- M416 Fool Set · PUBG Mobile · 3D -->
+      <figure class="mw v" data-cursor="play"><video src="media/mw-property.mp4" muted loop playsinline preload="none"></video></figure><!-- Property Edit · Real estate · Edit -->
+      <figure class="mw h" data-cursor="play"><video src="media/mw-showdown.mp4" muted loop playsinline preload="none"></video></figure><!-- ShowDown Launch · Product video · Motion -->
+    </div>
   </div>
 </section>
 
@@ -1002,7 +1033,7 @@ const dotsCv = $('#dots'), dctx = dotsCv.getContext('2d'), GAP = 18, DR = 96;
 let dotsDirty = false;
 function sizeDots() { const d = Math.min(2, devicePixelRatio || 1); dotsCv.width = innerWidth * d; dotsCv.height = innerHeight * d; dctx.setTransform(d, 0, 0, d, 0, 0); }
 const trail = []; let lastPX = -1e4, lastPY = -1e4;
-const BG_SEL = 'html,body,main,section,footer,.wrap,.cf,.cf-stage,.sec-head,.sec-head>div,.hero-top,.hero-row,.ex-grid,.kit-head,.kit-head>div,.ex-detail,.ex-detail>div,.ex-projects,.clips,.act,.act-copy,.eq,.mail,.foot-row,.foot-brand,.kit-cap,.hero-copy,.pillars,.proc,.proof,.proof-stats,.wf,.need,.intro,.aud,.aud-list,.aud-view,.caps,.points,.steps,.about,.hero-copy,.ctas,.ways';
+const BG_SEL = 'html,body,main,section,footer,.wrap,.cf,.cf-stage,.sec-head,.sec-head>div,.hero-top,.hero-row,.ex-grid,.kit-head,.kit-head>div,.ex-detail,.ex-detail>div,.ex-projects,.clips,.act,.act-copy,.eq,.mail,.foot-row,.foot-brand,.kit-cap,.hero-copy,.pillars,.proc,.proof,.proof-stats,.wf,.need,.intro,.aud,.aud-list,.aud-view,.caps,.points,.steps,.about,.hero-copy,.ctas,.ways,.mw-grid';
 function addTrail(e) {
   if (RM || !e.target.matches || !e.target.matches(BG_SEL)) return;
   const x = e.clientX, y = e.clientY + scrollY;
@@ -1158,6 +1189,12 @@ $('#intro').prepend(dotsCv);
 const navEl = $('.nav');
 function navTone() { navEl.style.visibility = 'hidden'; const el = document.elementFromPoint(innerWidth / 2, 34); navEl.style.visibility = ''; navEl.classList.toggle('light', false); }
 addEventListener('scroll', navTone, { passive: true });
+/* more work: every clip plays while it is on screen; a click pauses or resumes it */
+const mws = $$('.mw');
+mws.forEach(m => { const v = $('video', m); m.addEventListener('click', () => { m.dataset.held = m.dataset.held ? '' : '1'; if (m.dataset.held) { v.pause(); m.classList.remove('on'); m.dataset.cursor = 'play'; } else { v.play().catch(() => {}); m.classList.add('on'); m.dataset.cursor = 'pause'; } cursorRefresh(); }); });
+const mio = new IntersectionObserver(es => es.forEach(e => { const m = e.target, v = $('video', m); if (e.isIntersecting && !RM && !m.dataset.held) { m.classList.add('on'); m.dataset.cursor = 'pause'; v.play().catch(() => {}); } else if (!e.isIntersecting) { m.classList.remove('on'); v.pause(); } }), { threshold: .25 });
+mws.forEach(m => mio.observe(m));
+
 /* boot */
 setMode('brands');
 clips.forEach(c => { sizeClip(c); io.observe(c.cv); });
