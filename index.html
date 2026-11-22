@@ -1012,6 +1012,12 @@ let rw = 1;
 function sizeReel() {}
 let reelPreview = false, reelT = 0, reelPlaying = false, reelShot = -1, reelVisible = true;
 new IntersectionObserver(es => es.forEach(e => reelVisible = e.isIntersecting)).observe(reel);
+/* a playing showreel pauses when scrolled out of view and carries on when scrolled back */
+let reelAutoPaused = false;
+new IntersectionObserver(es => es.forEach(e => {
+  if (e.intersectionRatio < .4) { if (reelPlaying && !rv.paused) { rv.pause(); reelAutoPaused = true; } }
+  else if (reelAutoPaused) { reelAutoPaused = false; if (reelPlaying) rv.play().catch(() => { rv.muted = true; rv.play().catch(() => {}); }); }
+}), { threshold: [0, .4, 1] }).observe(reel);
 const scrub = $('#scrub');
 { const b = document.createElement('button'); b.setAttribute('aria-label', 'Seek in showreel'); b.innerHTML = '<i></i>'; b.addEventListener('click', e => { e.stopPropagation(); const r = b.getBoundingClientRect(); if (rv.duration) rv.currentTime = clamp((e.clientX - r.left) / r.width, 0, 1) * rv.duration; drawReel(); }); scrub.appendChild(b); }
 const mmss = s => `${pad2(Math.floor(s / 60))}:${pad2(Math.floor(s % 60))}`;
