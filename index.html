@@ -1007,7 +1007,7 @@ cf.addEventListener('wheel', e => {
 /* ================= 01 hero showreel ================= */
 const reel = $('#reel'), REEL = [0, 5, 3, 1, 2, 8].map(i => P[i]);
 let SHOT = 68 / 6; /* the v7 reel carries its own titles; the scrub splits its length into 6 equal parts */
-const rv = document.createElement('video'); rv.src = 'media/showreel-v7.mp4'; rv.poster = 'media/showreel-poster.jpg'; rv.addEventListener('loadedmetadata', () => { if (rv.duration) SHOT = rv.duration / REEL.length; }); rv.muted = true; rv.loop = true; rv.playsInline = true; rv.autoplay = false; rv.preload = 'metadata'; rv.setAttribute('muted', ''); rv.setAttribute('playsinline', ''); reel.prepend(rv);
+const rv = document.createElement('video'); rv.src = 'media/showreel-v9.mp4'; rv.poster = 'media/showreel-poster.jpg'; rv.addEventListener('loadedmetadata', () => { if (rv.duration) SHOT = rv.duration / REEL.length; }); rv.muted = true; rv.loop = true; rv.playsInline = true; rv.autoplay = false; rv.preload = 'metadata'; rv.setAttribute('muted', ''); rv.setAttribute('playsinline', ''); reel.prepend(rv);
 let rw = 1;
 function sizeReel() {}
 let reelPreview = false, reelT = 0, reelPlaying = false, reelShot = -1, reelVisible = true;
