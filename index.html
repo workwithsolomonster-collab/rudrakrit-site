@@ -627,7 +627,7 @@ body,.how,.foot,.explore,.cta{background:#000}
         <button class="aud-btn" role="tab" data-mode="films" aria-selected="false">Brand films</button>
       </div>
       <div class="aud-view">
-        <div class="stage" id="stage" role="tabpanel" aria-label="Preview"><video class="sv" data-mode="editing" src="media/main-edit.mp4" muted loop playsinline preload="metadata"></video><video class="sv" data-mode="motion" src="media/mw-showdown.mp4" muted loop playsinline preload="metadata"></video><video class="sv" data-mode="3d" src="media/mw-jadefang.mp4" muted loop playsinline preload="metadata"></video><video class="sv" data-mode="vfx" src="media/mw-bridge.mp4" muted loop playsinline preload="metadata"></video><video class="sv" data-mode="films" src="media/keyring-film.mp4" muted loop playsinline preload="metadata"></video></div>
+        <div class="stage" id="stage" role="tabpanel" aria-label="Preview"><video class="sv" data-mode="editing" src="media/full-main-edit.mp4" muted loop playsinline preload="metadata"></video><video class="sv" data-mode="motion" src="media/full-showdown.mp4" muted loop playsinline preload="metadata"></video><video class="sv" data-mode="3d" src="media/full-jadefang.mp4" muted loop playsinline preload="metadata"></video><video class="sv" data-mode="vfx" src="media/full-bridge.mp4" muted loop playsinline preload="metadata"></video><video class="sv" data-mode="films" src="media/full-keyring-film.mp4" muted loop playsinline preload="metadata"></video></div>
       </div>
     </div>
   </div>
@@ -665,14 +665,14 @@ body,.how,.foot,.explore,.cta{background:#000}
 <section class="band" id="more" aria-label="More work">
   <div class="wrap">
     <div class="mw-grid">
-      <figure class="mw v" data-cursor="play"><video src="media/mw-shelby.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- Shelby Set · PUBG Mobile · 3D -->
-      <figure class="mw v" data-cursor="play"><video src="media/mw-dravion.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- Dravion X Suit · PUBG Mobile · 3D -->
-      <figure class="mw h" data-cursor="play"><video src="media/mw-jadefang.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- Jadefang Aurora · PUBG Mobile · 3D -->
-      <figure class="mw h" data-cursor="play"><video src="media/mw-bridge.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- Bridge · Aankhon Ki Gustaakhiyan · VFX -->
-      <figure class="mw h" data-cursor="play"><video src="media/mw-train.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- Train · Aankhon Ki Gustaakhiyan · VFX -->
-      <figure class="mw v" data-cursor="play"><video src="media/mw-m416.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- M416 Fool Set · PUBG Mobile · 3D -->
-      <figure class="mw v" data-cursor="play"><video src="media/mw-property.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- Property Edit · Real estate · Edit -->
-      <figure class="mw h" data-cursor="play"><video src="media/mw-showdown.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- ShowDown Launch · Product video · Motion -->
+      <figure class="mw v" data-cursor="play"><video src="media/full-shelby.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- Shelby Set · PUBG Mobile · 3D -->
+      <figure class="mw v" data-cursor="play"><video src="media/full-dravion.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- Dravion X Suit · PUBG Mobile · 3D -->
+      <figure class="mw h" data-cursor="play"><video src="media/full-jadefang.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- Jadefang Aurora · PUBG Mobile · 3D -->
+      <figure class="mw h" data-cursor="play"><video src="media/full-bridge.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- Bridge · Aankhon Ki Gustaakhiyan · VFX -->
+      <figure class="mw h" data-cursor="play"><video src="media/full-train.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- Train · Aankhon Ki Gustaakhiyan · VFX -->
+      <figure class="mw v" data-cursor="play"><video src="media/full-m416.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- M416 Fool Set · PUBG Mobile · 3D -->
+      <figure class="mw v" data-cursor="play"><video src="media/full-property.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- Property Edit · Real estate · Edit -->
+      <figure class="mw h" data-cursor="play"><video src="media/full-showdown.mp4#t=0.6" muted loop playsinline preload="metadata"></video></figure><!-- ShowDown Launch · Product video · Motion -->
     </div>
   </div>
 </section>
@@ -964,7 +964,7 @@ function layoutCF(force) {
 }
 var pendingPlay = -1;
 function startPlay(i) { stopPlay(); playing = i; cards[i].el.classList.add('playing'); layoutCF(); cursorRefresh(); }
-function toggleCard(i) { const v = cards[i].clip.video; if (playing === i) { cards[i].userPaused = true; stopPlay(); } else { cards[i].userPaused = false; if (v) { v.muted = false; v.currentTime = 0; } startPlay(i); } }
+function toggleCard(i) { const v = cards[i].clip.video; if (playing === i) { cards[i].userPaused = true; stopPlay(); } else { cards[i].userPaused = false; if (v) { soundOnly(v); v.currentTime = 0; } startPlay(i); } }
 function stopPlay() { if (playing < 0) return; cards[playing].el.classList.remove('playing'); playing = -1; layoutCF(); cursorRefresh(); }
 
 /* drag / swipe */
@@ -1100,17 +1100,21 @@ function drawDots(dt) {
 }
 
 /* ================= who we work with ================= */
+/* sound: videos start muted (browsers require it); a click or tap turns sound on for that video and mutes every other one */
+function soundOnly(v) { $$('video').forEach(o => { if (o !== v && !o.muted) o.muted = true; }); if (v) v.muted = false; }
 const stg = $('#stage');
 let mode = '';
-function setMode(m) {
-  if (m === mode) return; mode = m;
+function setMode(m, sound) {
+  if (m === mode) { if (sound) { const cv = $('.sv.on', stg); if (cv) { soundOnly(cv); cv.play().catch(() => {}); } } return; } mode = m;
   $$('.aud-btn').forEach(b => { const on = b.dataset.mode === m; b.setAttribute('aria-selected', on); });
-  $$('.sv', stg).forEach(v => { const on = v.dataset.mode === m; v.classList.toggle('on', on); if (on && !RM) { v.currentTime = 0; v.play().catch(() => {}); } else v.pause(); });
+  $$('.sv', stg).forEach(v => { const on = v.dataset.mode === m; v.classList.toggle('on', on); if (on && !RM) { v.currentTime = 0; if (sound) soundOnly(v); else v.muted = true; v.play().catch(() => { v.muted = true; v.play().catch(() => {}); }); } else { v.pause(); v.muted = true; } });
 }
 let hoverT;
 const AUDS = $$('.aud-btn').map(b => b.dataset.mode);
+stg.addEventListener('click', () => { const cv = $('.sv.on', stg); if (!cv) return; if (cv.muted) { soundOnly(cv); cv.play().catch(() => {}); } else cv.muted = true; });
+stg.style.cursor = 'pointer';
 $$('.aud-btn').forEach(b => {
-  b.addEventListener('click', () => setMode(b.dataset.mode));
+  b.addEventListener('click', () => setMode(b.dataset.mode, true));
   b.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') { clearTimeout(hoverT); hoverT = setTimeout(() => setMode(b.dataset.mode), 140); } });
   b.addEventListener('pointerleave', () => clearTimeout(hoverT));
   b.addEventListener('keydown', e => {
@@ -1305,11 +1309,11 @@ addEventListener('scroll', navTone, { passive: true });
 const mws = $$('.mw');
 const hoverable = matchMedia('(hover: hover)').matches;
 let mwOn = null;
-function mwStop(m) { if (!m) return; m.classList.remove('on'); $('video', m).pause(); m.dataset.cursor = 'play'; if (mwOn === m) mwOn = null; }
-function mwPlay(m) { if (RM) return; if (mwOn && mwOn !== m) mwStop(mwOn); mwOn = m; m.classList.add('on'); $('video', m).play().catch(() => {}); m.dataset.cursor = 'pause'; }
+function mwStop(m) { if (!m) return; m.classList.remove('on'); $('video', m).pause(); $('video', m).muted = true; m.dataset.cursor = 'play'; if (mwOn === m) mwOn = null; }
+function mwPlay(m, sound) { if (RM) return; if (mwOn && mwOn !== m) mwStop(mwOn); mwOn = m; m.classList.add('on'); const v = $('video', m); if (sound) soundOnly(v); v.play().catch(() => { v.muted = true; v.play().catch(() => {}); }); m.dataset.cursor = 'pause'; }
 mws.forEach(m => {
   m.addEventListener('touchstart', () => { if (!m.classList.contains('on')) { mwPlay(m); m._tt = performance.now(); } }, { passive: true });
-  m.addEventListener('click', () => { if (m._tt && performance.now() - m._tt < 700) return; m.classList.contains('on') ? mwStop(m) : mwPlay(m); cursorRefresh(); });
+  m.addEventListener('click', () => { const v = $('video', m); if (m.classList.contains('on') && v.muted) { soundOnly(v); return; } if (m._tt && performance.now() - m._tt < 700) { soundOnly(v); return; } m.classList.contains('on') ? mwStop(m) : mwPlay(m, true); cursorRefresh(); });
 });
 
 /* boot */
