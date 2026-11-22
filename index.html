@@ -581,7 +581,7 @@ body,.how,.foot,.explore,.cta{background:#000}
     </div>
     <div class="ctas"><a class="btn-p" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=aaravraj.rudrakrit@gmail.com" target="_blank" rel="noopener">Let's work together</a><a class="btn-g" href="#work">Explore our work</a></div>
   </div>
-  <div class="reel intro-anim d4" id="reel" data-cursor="pause" tabindex="0" role="button" aria-label="Showreel. Press to pause or play">
+  <div class="reel intro-anim d4" id="reel" data-cursor="play" tabindex="0" role="button" aria-label="Showreel. Press to pause or play">
     <div class="reel-ui">
       <div class="reel-top" aria-hidden="true" style="visibility:hidden"><span class="rec" id="reel-state">Showreel · Playing</span><span class="hide-s">16:9 · 24 fps · 4K</span></div>
       <div class="reel-bot">
@@ -1007,17 +1007,19 @@ cf.addEventListener('wheel', e => {
 /* ================= 01 hero showreel ================= */
 const reel = $('#reel'), REEL = [0, 5, 3, 1, 2, 8].map(i => P[i]);
 let SHOT = 68 / 6; /* the v7 reel carries its own titles; the scrub splits its length into 6 equal parts */
-const rv = document.createElement('video'); rv.src = 'media/showreel-v7.mp4'; rv.poster = 'media/showreel-poster.jpg'; rv.addEventListener('loadedmetadata', () => { if (rv.duration) SHOT = rv.duration / REEL.length; }); rv.muted = true; rv.loop = true; rv.playsInline = true; rv.autoplay = !RM; rv.preload = 'auto'; rv.setAttribute('muted', ''); rv.setAttribute('playsinline', ''); reel.prepend(rv);
+const rv = document.createElement('video'); rv.src = 'media/showreel-v7.mp4'; rv.poster = 'media/showreel-poster.jpg'; rv.addEventListener('loadedmetadata', () => { if (rv.duration) SHOT = rv.duration / REEL.length; }); rv.muted = true; rv.loop = true; rv.playsInline = true; rv.autoplay = false; rv.preload = 'metadata'; rv.setAttribute('muted', ''); rv.setAttribute('playsinline', ''); reel.prepend(rv);
 let rw = 1;
 function sizeReel() {}
-let reelT = 0, reelPlaying = !RM, reelShot = -1, reelVisible = true;
+let reelPreview = false, reelT = 0, reelPlaying = false, reelShot = -1, reelVisible = true;
 new IntersectionObserver(es => es.forEach(e => reelVisible = e.isIntersecting)).observe(reel);
 const scrub = $('#scrub');
 { const b = document.createElement('button'); b.setAttribute('aria-label', 'Seek in showreel'); b.innerHTML = '<i></i>'; b.addEventListener('click', e => { e.stopPropagation(); const r = b.getBoundingClientRect(); if (rv.duration) rv.currentTime = clamp((e.clientX - r.left) / r.width, 0, 1) * rv.duration; drawReel(); }); scrub.appendChild(b); }
 const mmss = s => `${pad2(Math.floor(s / 60))}:${pad2(Math.floor(s % 60))}`;
 const segs = $$('i', scrub);
-function toggleReel() { reelPlaying = !reelPlaying; reelPlaying ? rv.play().catch(() => {}) : rv.pause(); reel.classList.toggle('paused', !reelPlaying); reel.dataset.cursor = reelPlaying ? 'pause' : 'play'; $('#reel-state').textContent = `Showreel · ${reelPlaying ? 'Playing' : 'Paused'}`; cursorRefresh(); }
-if (RM) { reel.classList.add('paused'); reel.dataset.cursor = 'play'; $('#reel-state').textContent = 'Showreel · Paused'; }
+function toggleReel() { if (reelPreview) { reelPreview = false; reelPlaying = false; } reelPlaying = !reelPlaying; if (reelPlaying) { soundOnly(rv); rv.play().catch(() => { rv.muted = true; rv.play().catch(() => {}); }); } else { rv.pause(); rv.muted = true; } reel.classList.toggle('paused', !reelPlaying); reel.dataset.cursor = reelPlaying ? 'pause' : 'play'; $('#reel-state').textContent = `Showreel · ${reelPlaying ? 'Playing' : 'Paused'}`; cursorRefresh(); }
+reel.classList.add('paused');
+reel.addEventListener('pointerenter', e => { if (e.pointerType !== 'mouse' || reelPlaying || RM) return; reelPreview = true; rv.muted = true; rv.play().catch(() => {}); });
+reel.addEventListener('pointerleave', e => { if (!reelPreview) return; reelPreview = false; rv.pause(); });
 reel.addEventListener('click', toggleReel);
 reel.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { toggleReel(); e.preventDefault(); } });
 const pad2 = v => String(v).padStart(2, '0');
@@ -1312,8 +1314,9 @@ let mwOn = null;
 function mwStop(m) { if (!m) return; m.classList.remove('on'); $('video', m).pause(); $('video', m).muted = true; m.dataset.cursor = 'play'; if (mwOn === m) mwOn = null; }
 function mwPlay(m, sound) { if (RM) return; if (mwOn && mwOn !== m) mwStop(mwOn); mwOn = m; m.classList.add('on'); const v = $('video', m); if (sound) soundOnly(v); v.play().catch(() => { v.muted = true; v.play().catch(() => {}); }); m.dataset.cursor = 'pause'; }
 mws.forEach(m => {
+  if (hoverable) { m.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse' && !m.classList.contains('on') && !(mwOn && !$('video', mwOn).muted)) { mwPlay(m, false); m._demo = true; cursorRefresh(); } }); m.addEventListener('pointerleave', () => { if (m._demo && $('video', m).muted) { mwStop(m); cursorRefresh(); } m._demo = false; }); }
   m.addEventListener('touchstart', () => { if (!m.classList.contains('on')) { mwPlay(m); m._tt = performance.now(); } }, { passive: true });
-  m.addEventListener('click', () => { const v = $('video', m); if (m.classList.contains('on') && v.muted) { soundOnly(v); return; } if (m._tt && performance.now() - m._tt < 700) { soundOnly(v); return; } m.classList.contains('on') ? mwStop(m) : mwPlay(m, true); cursorRefresh(); });
+  m.addEventListener('click', () => { const v = $('video', m); if (m.classList.contains('on') && v.muted) { if (mwOn && mwOn !== m) mwStop(mwOn); mwOn = m; m._demo = false; soundOnly(v); m.dataset.cursor = 'pause'; cursorRefresh(); return; } if (m._tt && performance.now() - m._tt < 700) { soundOnly(v); return; } m.classList.contains('on') ? mwStop(m) : mwPlay(m, true); cursorRefresh(); });
 });
 
 /* boot */
